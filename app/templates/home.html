@@ -1,1 +1,28 @@
-<h1>Ciclo lineal de produccion!!!!!!!!!!!!!!!!!!</h1>
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<section>
+    <div class="container-sm" id="home">
+        <div class="row">
+            <div class="col-6" id="lista-card">
+                {% for nota in notas %}
+
+                <p>{{nota.nombre}}</p>
+                {% endfor %}
+                
+                <!-- <div class="container-fluid">
+                    <form class="d-flex" role="search">
+                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                  </div>                 -->
+            </div>
+            <div class="col-3" id="registro">
+                <h4>Agrega una nueva Nota</h4>
+                <button type="button" class="btn btn-primary">Agregar</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

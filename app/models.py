@@ -29,26 +29,30 @@ class Area(models.Model):
         return self.nombre_area()    
 
 
-class Etapa(models.Model):
-    id_etapa = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=50) 
-    fecha_inicio  = models.DateField() 
-    fecha_termino  = models.DateField()
-    id_area = models.ForeignKey(Area, on_delete=models.CASCADE)  
 
-    def __str__(self):
-        return self.nombre
 
 class Ciclo(models.Model):
     id_ciclo = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=40)
     descripcion = models.CharField(max_length=40)
     fecha = models.DateField()
-    are = models.ForeignKey(Area, on_delete=models.CASCADE)
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    activo = models.BooleanField()
 
     def __str__(self):
         return self.nombre
-        
+
+class Etapa(models.Model):
+    id_etapa = models.AutoField(primary_key=True)
+    nombre  = models.CharField(max_length=50) 
+    fecha_inicio  = models.DateField() 
+    fecha_termino  = models.DateField()
+    id_area = models.ForeignKey(Area, on_delete=models.CASCADE)  
+    ciclo = models.ForeignKey(Ciclo, on_delete=models.CASCADE)
+    activo = models.BooleanField()
+
+    def __str__(self):
+        return self.nombre        
 
 class Opcion(models.Model):
     id_Opcion = models.AutoField(primary_key=True)
@@ -58,8 +62,8 @@ class Opcion(models.Model):
         return self.nombre
         
 
-class Carta(models.Model):
-    id_Carta = models.AutoField(primary_key=True)
+class Nota(models.Model):
+    id_nota = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=40)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE)
@@ -71,8 +75,6 @@ class Carta(models.Model):
     def __str__(self):
         return self.nombre
         
-
-
 
 
 class Entrada(models.Model):
