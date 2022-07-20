@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AreaEmpresa, Entrada, Nota, CicloArea, Empresa, Etapa, Opcion, Oportunidades, Salida
+from .models import AreaEmpresa, CicloArea, Empresa, Entrada, Etapa, Oportunidades, Salida
 
 
 # Register your models here.

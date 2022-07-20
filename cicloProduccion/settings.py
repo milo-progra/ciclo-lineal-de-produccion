@@ -123,6 +123,9 @@ STATIC_URL = 'static/'
 #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = "static/"
 
+#Configuracion para agregar campos al usuario
+AUTH_USER_MODEL = 'user.Usuario'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
