@@ -7,8 +7,17 @@
         <div class="row">
             <div class="col-6" id="lista-card">
                 {% for nota in notas %}
+                    {% for etapa in etapas %}
+                        
+                        
 
-                <p>{{nota.nombre}}</p>
+                       
+
+                        {%  if nota.etapa_id == etapa.id_etapa %}
+                            <p>{{nota.nombre}}</p>
+                        {% endif %}    
+                        
+                    {% endfor %}
                 {% endfor %}
                 
                 <!-- <div class="container-fluid">

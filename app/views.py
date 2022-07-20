@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from .models import Nota                
+from django.shortcuts import get_object_or_404, render
+from .models import Nota, Etapa                
 
 # Create your views here.
 def home(request):
-    notas = Nota.objects.filter(etapa = 1)
-    # estado = notas.etapa.estado
-    # print(estado)
+
+    notas = Nota.objects.all().filter(etapa = 1)
+
+    #etapa = get_object_or_404(Etapa, activo = 1 )
+    etapas = Etapa.objects.filter(activo = 1)
     
-    return render(request,'home.html', {'notas':notas})
+    return render(request,'home.html', {'notas':notas, 'etapas':etapas})
 
 
 
