@@ -2,7 +2,7 @@ from lib2to3.pgen2.token import OP
 from pyexpat import model
 from tkinter import CASCADE
 from django.db import models
-#from django.contrib.auth.models import User
+
 from user.models import Usuario
 
 
@@ -89,8 +89,16 @@ class Oportunidades(models.Model):
 
     def __str__(self):
         return self.nombre
-                        
+
+
+class RegistroTrabajador(models.Model):
+    id_registro = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+    descripcion = models.TextField(max_length=160)                
         
+
 # class Nota(models.Model):
 #     id_nota = models.AutoField(primary_key=True)
 #     nombre = models.CharField(max_length=40)
