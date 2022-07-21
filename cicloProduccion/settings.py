@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'app',
     'user',
 ]
@@ -120,8 +123,8 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-STATIC_ROOT = "static/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+#STATIC_ROOT = "static/"
 
 #Configuracion para agregar campos al usuario
 AUTH_USER_MODEL = 'user.Usuario'

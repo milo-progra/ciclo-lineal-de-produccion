@@ -5,8 +5,16 @@
 <section>
     <div class="container-sm" id="home">
         <div class="row">
+            <h4>Hola!!!!! {{ user.username }}</h4>
+            <div class="container-sm" id="seleccionarArea">
+                <h4>Antes de comenzar selecciona tu empresa y area</h4>
+                <a type="button" class="btn btn-primary" href="{% url 'agregarArea' %}">Aqui</a>
+            </div>
             <div class="col-6" id="lista-card">
-                {% for nota in notas %}
+                
+                
+
+                <!-- {% for nota in notas %}
                     {% for etapa in etapas %}
                         
                         
@@ -18,7 +26,7 @@
                         {% endif %}    
                         
                     {% endfor %}
-                {% endfor %}
+                {% endfor %} -->
                 
                 <!-- <div class="container-fluid">
                     <form class="d-flex" role="search">
@@ -27,10 +35,10 @@
                     </form>
                   </div>                 -->
             </div>
-            <div class="col-3" id="registro">
+            <!-- <div class="col-3" id="registro">
                 <h4>Agrega una nueva Nota</h4>
                 <button type="button" class="btn btn-primary">Agregar</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
