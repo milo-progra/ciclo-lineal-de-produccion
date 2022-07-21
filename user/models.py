@@ -1,15 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, UserManager
+
 # Create your models here.
 
-class UsuarioManager(BaseUserManager):
+class UsuarioManager(UserManager):
     def create_user(self, username, nombre, apellido,telefono, correo, password = None):
         usuario = self.model(
-            username = username,
-            telefono = telefono,
-            first_name = nombre,
-            last_name = apellido,
-            email = correo
+            username    = username,
+            telefono    = telefono,
+            first_name  = nombre,
+            last_name   = apellido,
+            email       = correo
         )
         usuario.set_password(password)
         usuario.save()
@@ -31,9 +32,15 @@ class UsuarioManager(BaseUserManager):
 class Usuario(AbstractUser):
     telefono = models.IntegerField(null=True)
 
-    def has_perm(self, perm, obj = None) :
+    def has_perm(self,perm,obj = None):
         return True
 
     def has_module_perms(self, app_label):
         return True   
+
+
+
+
+#ingresar area del trabajador
+
 
