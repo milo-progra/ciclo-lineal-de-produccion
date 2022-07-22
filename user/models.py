@@ -32,11 +32,25 @@ class UsuarioManager(UserManager):
 class Usuario(AbstractUser):
     telefono = models.IntegerField(null=True)
 
+    def __str__(self):
+        return f'{self.username}, {self.email},         Administrador:{self.is_staff}'
+
+
     def has_perm(self,perm,obj = None):
         return True
 
-    def has_module_perms(self, app_label):
-        return True   
+    def has_module_perms(self,app_label):
+        return True 
+
+    # @property
+    # def is_staff(self):
+    #     return self.usuario_administrador    
+
+    # def get_short_name(self):
+    #     return self.username
+    
+    # def get_full_name(self):
+    #     return self.username + '' + self.last_name    
 
 
 
