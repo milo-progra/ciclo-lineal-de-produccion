@@ -93,11 +93,15 @@ class Oportunidades(models.Model):
 
 class RegistroTrabajador(models.Model):
     id_registro = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     descripcion = models.TextField(max_length=160)                
-        
+    id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+
+    def nombre_registro(self):
+        return "{}, {}". format(self.usuario, self.area) 
+
+    def __str__(self):
+        return self.nombre_registro()           
 
 # class Nota(models.Model):
 #     id_nota = models.AutoField(primary_key=True)

@@ -13,7 +13,7 @@
                     <form action="" method="post">
                         {% csrf_token %}
                         {{form | crispy}}
-                        
+
                         <input type="submit" class="btn btn-primary" value="ingresar">
                     </form>
                 </div>
@@ -23,4 +23,97 @@
 </div>
 <div class="container-sm">
 
-{% endblock %}
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+        $(function () {
+            // on('change') para que sirve
+            $('select[name= "empresa"]').on('change', function () {
+                var id = $(this).val()
+                console.log(id);
+                var csrftoken = getCookie('csrftoken'); /* para que sirve*/
+                var select_area = $('select[name ="id_area"]');
+                var options = '<option value = "0"> Seleccione Area </option>'
+                if (id === '') {
+                    select_area.html(options);
+                    return false;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: window.location.pathname,
+                    headers: {'X-CSRFToken': csrftoken},
+                    data: {
+                        'action': 'buscar_area',
+                        'id': id
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    if (!data.hasOwnProperty('error')) {
+                        $.each(data, function (key, value) {
+                            select_area.removeAttr('hidden')
+                            options += '<option value = "' + value.area + '">' + value.nombre + '</option>'
+                        })
+                        return false;
+                    }
+                    message_error(data.error)
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert('.fail: ' + textStatus + ': ' + errorThrown);
+
+                }).always(function (data) {
+                    select_area.html(options);
+                })
+            });
+        });
+
+
+    </script>
+
+    {% endblock %}
+
+
+    <!-- <script>
+        $(function () {
+            $('select[name= "empresa"]').on('change', function () { /*Selecciono la id y realizar una accion al ejecutarla*/
+                /* alert('X');  al seleccionar la empresa en el form muestra una alerta*/
+                var id = $(this).val(); /*Guardar la id de la empresa en la variabla id*/
+                // alert(id)
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        'action': 'buscar_area',
+                        'id': id
+                    },
+                    dataType: 'json'
+
+                }).done(function (data) {
+                    console.log(data);
+                    if (!data.hasOwnProperty('error')) {
+                        
+                        console.log(data);
+                        return false;
+                    }
+                    message_error(data.error)
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+                    
+                })
+            })
+        })
+    </script> -->
