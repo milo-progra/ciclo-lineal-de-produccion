@@ -5,5 +5,5 @@ from .views import registro, AgregarArea
 
 urlpatterns = [
     path('registro/', registro, name="registro"),
-    path('agregar_area/', AgregarArea, name="agregarArea")
+    path('agregar_area/<id>/', AgregarArea, name="agregar_Area")
 ]

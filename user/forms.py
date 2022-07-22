@@ -1,7 +1,7 @@
 
 from django import forms
 from .models import Usuario
-from app.models import RegistroTrabajador, Empresa
+from app.models import RegistroTrabajador, Empresa, AreaEmpresa
 from django.contrib.auth.forms import UserCreationForm
 
 class UsuarioForm(forms.ModelForm):
@@ -37,8 +37,20 @@ class UsuarioForm(forms.ModelForm):
 
 class RegistroTrabajadorForm(forms.ModelForm):
     
-    #empresa = forms.ModelChoiceField(queryset=Empresa.objects.all(), widget=Select(attrs ={}))
+    descripcion = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control' }))
+    empresa = forms.ModelChoiceField(queryset=Empresa.objects.all(), widget=forms.Select(attrs ={
+        'class': 'form-control'
+    }))
+
+    id_area = forms.ModelChoiceField(queryset=AreaEmpresa.objects.all(), widget=forms.Select(attrs ={
+        'class': 'form-control', 'hidden': 'true' 
+    }), label= 'AreaEmpresa')
+
 
     class Meta:
         model = RegistroTrabajador
-        fields ='__all__'
+        fields = 'id_registro', 'descripcion' ,'empresa' ,'id_area'   
+
+
+
+                

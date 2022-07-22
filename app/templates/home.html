@@ -8,7 +8,7 @@
             <h4>Hola!!!!! {{ user.username }}</h4>
             <div class="container-sm" id="seleccionarArea">
                 <h4>Antes de comenzar selecciona tu empresa y area</h4>
-                <a type="button" class="btn btn-primary" href="{% url 'agregarArea' %}">Aqui</a>
+                <a type="button" class="btn btn-primary" href="{% url 'agregar_Area' user.id %}">Aqui</a>
             </div>
             <div class="col-6" id="lista-card">
                 
