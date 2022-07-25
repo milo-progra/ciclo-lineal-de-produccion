@@ -16,3 +16,5 @@ admin.site.register(Entrada)
 admin.site.register(Salida)
 admin.site.register(Oportunidades)
 
+
+
