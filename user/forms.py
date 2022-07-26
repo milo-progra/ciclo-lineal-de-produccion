@@ -1,6 +1,7 @@
 
 from dataclasses import field, fields
 from pyexpat import model
+from xml.dom.minidom import Attr
 from django import forms
 from .models import Usuario
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -8,6 +9,12 @@ from app.models import RegistroTrabajador, Empresa, AreaEmpresa
 from django.contrib.auth.forms import UserCreationForm
 
 class UsuarioForm(forms.ModelForm):
+
+    telefono = forms.IntegerField(label= 'Telefono', widget= forms.NumberInput(attrs={
+        'class': 'form-control mb-2',
+        'placeholder':'Ingrese Telefono',
+        'id': 'telefono'
+    })) 
 
     password = forms.CharField(label= 'Contraseña', widget=forms.PasswordInput(
         attrs={

@@ -1,10 +1,21 @@
 from dataclasses import fields
 from pyexpat import model
 from django import forms
-from .models import Nota
+from .models import Entrada, Salida, Oportunidades
 
-class FORMNAME(forms.Form):
-    class meta:
-        model = Nota
-        fields = '__all__'
+class EntradaForm(forms.ModelForm):
+    class Meta:
+        model = Entrada
+        fields = 'nombre',
 
+
+class SalidaForm(forms.ModelForm):
+    class Meta:
+        model = Salida
+        fields = 'nombre',
+
+
+class OportunidadForm(forms.ModelForm):
+    class Meta:
+        model = Oportunidades
+        fields = 'nombre',

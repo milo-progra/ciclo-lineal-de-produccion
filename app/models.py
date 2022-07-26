@@ -44,7 +44,7 @@ class CicloArea(models.Model):
 
 class Etapa(models.Model):
     id_etapa = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=50) 
+    nombre  = models.CharField(max_length=50)
     fecha_inicio  = models.DateField() 
     fecha_termino  = models.DateField()
     area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)  
@@ -52,7 +52,11 @@ class Etapa(models.Model):
     activo = models.BooleanField()
 
     def __str__(self):
-        return self.nombre        
+        return self.nombre    
+
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).uppercase()
+        return super(Etapa, self).save(*args, **kwargs)        
 
 
         
@@ -60,10 +64,10 @@ class Etapa(models.Model):
 class Entrada(models.Model):
     id_entrada = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha = models.DateField()
+    fecha =  models.DateTimeField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
+    #cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
@@ -71,10 +75,10 @@ class Entrada(models.Model):
 class Salida(models.Model):
     id_salida = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha = models.DateField()
+    fecha = models.DateTimeField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
+   
 
     def __str__(self):
         return self.nombre
@@ -82,10 +86,10 @@ class Salida(models.Model):
 class Oportunidades(models.Model):
     id_entrada = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha = models.DateField()
+    fecha = models.DateTimeField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return self.nombre
