@@ -1,15 +1,15 @@
-{% extends 'autodiagnostico/extraccion/home_extraccion.html' %}
+{% extends 'autodiagnostico/diseñoProduccion/home_diseño.html' %}
 {% load static %}
 {% block titulo %}Odyssey | Home{% endblock %}
 {% load crispy_forms_tags %}
 
 
-{% block extraccion %}
+{% block diseño %}
 <div class="container">
-    <h4>Entradas</h4>
+    <h4>Salidas</h4>
 
     <form action="" method="post">
-        <h4>Ingresa una entrada</h4>
+        <h4>Ingresa una salida</h4>
         {% csrf_token %}
         {{form | crispy}}
 
@@ -20,12 +20,12 @@
     </form>
 </div>
 <br>
-<h4>Tus entradas</h4>
+<h4>Tus Salidas</h4>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for p in entradas %}
+    {% for p in salidas %}
     
-    {% if p.etapa.nombre == "Extraccion materia prima" %}
+    {% if p.etapa.nombre == "Diseño y produccion" %}
         
     
         <div class="col">
@@ -41,8 +41,11 @@
     
     {% endfor %}
 </div>
+
 <script>
-    document.getElementById("entrada").className = "btn btn-secondary"
+    document.getElementById("salida").className = "btn btn-secondary"
 </script>
-{% endblock extraccion %}
+    
+    
+{% endblock diseño %}
     

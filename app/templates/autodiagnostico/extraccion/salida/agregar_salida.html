@@ -6,10 +6,10 @@
 
 {% block extraccion %}
 <div class="container">
-    <h4>Entradas</h4>
+    <h4>Salidas</h4>
 
     <form action="" method="post">
-        <h4>Ingresa una entrada</h4>
+        <h4>Ingresa una salida</h4>
         {% csrf_token %}
         {{form | crispy}}
 
@@ -20,10 +20,10 @@
     </form>
 </div>
 <br>
-<h4>Tus entradas</h4>
+<h4>Tus Salidas</h4>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for p in entradas %}
+    {% for p in salidas %}
     
     {% if p.etapa.nombre == "Extraccion materia prima" %}
         
@@ -41,8 +41,10 @@
     
     {% endfor %}
 </div>
+
 <script>
-    document.getElementById("entrada").className = "btn btn-secondary"
+    document.getElementById("salida").className = "btn btn-secondary"
 </script>
+    
 {% endblock extraccion %}
     

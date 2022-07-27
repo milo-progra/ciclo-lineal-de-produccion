@@ -1,0 +1,46 @@
+{% extends 'autodiagnostico/logistica/home_logistica.html' %}
+{% load static %}
+{% block titulo %}Odyssey | Home{% endblock %}
+{% load crispy_forms_tags %}
+
+
+{% block logistica %}
+<div class="container">
+    <h4>Salidas</h4>
+
+    <form action="" method="post">
+        <h4>Ingresa una salida</h4>
+        {% csrf_token %}
+        {{form | crispy}}
+
+        <div>
+
+            <input type="submit" class="btn btn-primary" value="ingresar">
+        </div>
+    </form>
+</div>
+<br>
+<h4>Tus Salidas</h4>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for p in salidas %}
+        {% if p.etapa.nombre == "Logistica" %}           
+            <div class="col">
+                <div class="card text-bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">{{p.etapa}}</h5>
+                        <p class="card-text">{{p.nombre}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    
+    {% endfor %}
+</div>
+
+<script>
+    document.getElementById("salida").className = "btn btn-secondary"
+</script>
+    
+{% endblock logistica %}
+    
