@@ -53,10 +53,7 @@ class Etapa(models.Model):
 
     def __str__(self):
         return self.nombre    
-
-    def save(self, *args, **kwargs):
-        self.nombre = (self.nombre).uppercase()
-        return super(Etapa, self).save(*args, **kwargs)        
+       
 
 
         

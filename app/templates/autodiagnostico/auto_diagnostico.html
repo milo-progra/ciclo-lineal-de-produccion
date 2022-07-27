@@ -42,32 +42,34 @@
                 <h4>Selecciona una Etapa</h4>
                 <div class="row">
                     <div class="col">
-                        <a href="{% url 'extraccion_materiaPrima' %}"><button type="button">Extraccion Materia Prima</button></a>
+                        <a href="{% url 'extraccion_materiaPrima' %}"><button type="button" id="extraccion">Extraccion Materia Prima</button></a>
                     </div>
                     <div class="col">
-                        <a href="{% url 'diseño_Produccion' %}"><button type="button">Diseño y produccion</button></a>
+                        <a href="{% url 'diseño_Produccion' %}"><button type="button" id="diseño">Diseño y produccion</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'logistica' %}"><button type="button" id="logistica">Logistica</button></a>
                     </div>
                 </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <a href="{% url 'compra' %}"><button type="button" id="compra">Compra</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'uso_consumo' %}"><button type="button" id="uso">Uso consumo</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'fin_vida' %}"><button type="button" id="fin">Fin de vida</button></a>
+                    </div>
+                </div>
+               
 
 
                 <hr>
-                
 
-
-
-                <!-- <h4>Ingresa Tus notas</h4>
-                <div class="row">
-                    <div class="col">
-                        <a href="{% url 'agregar_entrada' %}"><button type="button">Entradas</button></a>
-                    </div>
-                    <div class="col">
-                        <a href="{% url 'agregar_salida' %}"><button type="button">Salidas</button></a>
-                    </div>
-                    <div class="col">
-                        <a href="{% url 'agregar_oportunidad' %}"><button type="button">Oportunidades</button></a>
-                    </div>
-                </div> -->
             </div>
+            {% block body %}{% endblock %}
 
             {% else %}
             <h1>Registra la empresa y el area a la que perteneces!!!!</h1>
@@ -82,49 +84,7 @@
 
             {% endif %}
             <hr>
-            <!-- <div class="row">
-                <h4>Entradas</h4>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural
-                                    lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a short card.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural
-                                    lead-in to additional content.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural
-                                    lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
             </div>
             <hr>
             
@@ -132,22 +92,15 @@
         </div>
 
         <!-- Header -->
-
-
-
-
-
-
-
-
-
-
         <br>
+      
         <br>
     </div>
-
+  
+   
     <!-- BG -->
     <div id="bg"></div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
