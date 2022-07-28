@@ -10,6 +10,34 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UsuarioForm(forms.ModelForm):
 
+    username = forms.CharField(label= 'Nombre de usuario', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control mb-2',
+            'placeholder':'Ingrese su nombre de usuario',
+            'id': 'username'
+        }))
+
+    first_name = forms.CharField(label= ' ingrese su nombre', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control mb-2',
+            'placeholder':'Ingrese su nombre de usuario',
+            'id': 'first_name'
+        }))    
+
+    last_name = forms.CharField(label= ' ingrese su apellido', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control mb-2',
+            'placeholder':'Ingrese su nombre de usuario',
+            'id': 'last_name'
+        })) 
+        
+
+    email = forms.EmailField(label= 'correo electronico', widget= forms.EmailInput(attrs={
+        'class': 'form-control mb-2',
+        'placeholder':'Ingrese su correo electronico',
+        'id': 'email'
+    })) 
+
     telefono = forms.IntegerField(label= 'Telefono', widget= forms.NumberInput(attrs={
         'class': 'form-control mb-2',
         'placeholder':'Ingrese Telefono',
@@ -47,7 +75,12 @@ class UsuarioForm(forms.ModelForm):
 
 class RegistroTrabajadorForm(forms.ModelForm):
     
-    descripcion = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control' }))
+    descripcion = forms.CharField(widget=forms.TextInput(attrs=
+    {
+        'class': 'form-control',
+        'id' :'descripcion' 
+    }))
+
     empresa = forms.ModelChoiceField(queryset=Empresa.objects.all(), widget=forms.Select(attrs ={
         'class': 'form-control'
     }))
