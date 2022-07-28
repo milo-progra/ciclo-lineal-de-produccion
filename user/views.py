@@ -21,10 +21,10 @@ def registro(request):
         formulario = UsuarioForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-            # user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password1"]) #resibir usuario y password para hacer un login automatico
-            #login(request, user)
+            user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password"]) #resibir usuario y password para hacer un login automatico
+            login(request, user)
             #message.success(request, 'Te has registrado correctamente')
-            return redirect(to='home')
+            return redirect(to='auto_diagnostico')
         data["form"] = formulario
 
     return render(request, 'registration/registro.html', data)
@@ -58,7 +58,7 @@ def AgregarArea(request, id):
                 post.id_area = AreaEmpresa.objects.get(id_area = request.POST['id_area'])
                 post.descripcion = request.POST['descripcion']
                 post.save()
-                return redirect(to='home')
+                return redirect(to='auto_diagnostico')
     else:
         print("No es un post!!!!")
         form =  RegistroTrabajadorForm
