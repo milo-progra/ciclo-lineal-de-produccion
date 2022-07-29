@@ -7,15 +7,29 @@
 <div class="container-sm">
     <h4>Opciones de extraccion de materia prima</h4>
     <div class="row">
-        <div class="col">
-            <a href="{% url 'agregar_entrada_extraccion' %}"><button type="button" id="entrada">Entradas</button></a>
-        </div>
-        <div class="col">
-            <a href="{% url 'agregar_salida_extraccion' %}"><button type="button" id="salida">Salidas</button></a>
-        </div>
-        <div class="col">
-            <a href="{% url 'agregar_oportunidad_extraccion' %}"><button type="button" id="oportunidad">Oportunidades</button></a>
-        </div>
+        
+        {% if user.is_staff %}
+            <div class="col">
+                <a href="{% url 'entradas_extraccion' %}"><button type="button" id="entrada">Tabla Entradas</button></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'salidas_extraccion' %}"><button type="button" id="salida">Tabla Salidas</button></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'oportuniades_extraccion' %}"><button type="button" id="oportunidad">Tabla Oportunidades</button></a>
+            </div>
+    
+        {% else %}
+            <div class="col">
+                <a href="{% url 'agregar_entrada_extraccion' %}"><button type="button" id="entrada">Entradas</button></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'agregar_salida_extraccion' %}"><button type="button" id="salida">Salidas</button></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'agregar_oportunidad_extraccion' %}"><button type="button" id="oportunidad">Oportunidades</button></a>
+            </div>
+            {% endif %}
     </div>
 </div>
 <hr>

@@ -1,0 +1,32 @@
+{% extends 'autodiagnostico/auto_diagnostico.html' %}
+{% load static %}
+{% block titulo %}Odyssey | Home{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container-sm">
+    <h4>Opciones de fin de vida</h4>
+    <div class="row">
+        <div class="col">
+            <a href="{% url 'agregar_entrada_fin' %}"><button type="button" id="entrada">Entradas</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'agregar_salida_fin' %}"><button type="button" id="salida">Salidas</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'agregar_oportunidad_fin' %}"><button type="button" id="oportunidad">Oportunidades</button></a>
+        </div>
+    </div>
+</div>
+<hr>
+<script>
+    document.getElementById("fin").className = "btn btn-secondary"
+</script>
+
+
+{% block fin %}{% endblock fin %}
+    
+
+
+
+{% endblock %}
