@@ -39,8 +39,7 @@
                         {% for p in registros %}
                         <h3>{{p.id_area}}</h3>
                         {% endfor %}
-                        <h3>Hola!! {{user.username}} </h3>
-                        
+                        <h3>Hola!! {{user.username}} </h3>                
 
                 </div>
 
@@ -79,8 +78,8 @@
 
             <hr>
 
+            {% block body %}{% endblock %}
         </div>
-        {% block body %}{% endblock %}
 
         {% else %}
         <h1>Registra la empresa y el area a la que perteneces!!!!</h1>

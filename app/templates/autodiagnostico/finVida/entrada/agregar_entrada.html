@@ -1,10 +1,10 @@
-{% extends 'autodiagnostico/finVida/home_finVida.html' %}
+{% extends 'autodiagnostico/extraccion/home_extraccion.html' %}
 {% load static %}
-
+{% block titulo %}Odyssey | Home{% endblock %}
 {% load crispy_forms_tags %}
 
 
-{% block fin %}
+{% block extraccion %}
 <div class="container">
     <h4>Entradas</h4>
 
@@ -26,7 +26,6 @@
     {% for p in entradas %}
     
     {% if p.etapa.nombre == "Fin de vida" %}
-        
     
         <div class="col">
             <div class="card text-bg-warning">
@@ -41,10 +40,8 @@
     
     {% endfor %}
 </div>
-
 <script>
     document.getElementById("entrada").className = "btn btn-secondary"
 </script>
-    
-{% endblock fin %}
+{% endblock extraccion %}
     
