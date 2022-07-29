@@ -7,6 +7,20 @@
 <div class="container-sm">
     <h4>Opciones de Compra</h4>
     <div class="row">
+        
+        {% if user.is_staff %}
+        <div class="col">
+            <a href="{% url 'entradas_compra' %}"><button type="button" id="entrada">Tabla Entradas</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'salida_compra' %}"><button type="button" id="salida">Tabla Salidas</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'oportunidad_compra' %}"><button type="button" id="oportunidad">Tabla Oportunidades</button></a>
+        </div>
+        
+        {% else %}
+        
         <div class="col">
             <a href="{% url 'agregar_entrada_compra' %}"><button type="button" id="entrada">Entradas</button></a>
         </div>
@@ -16,6 +30,7 @@
         <div class="col">
             <a href="{% url 'agregar_oportunidad_compra' %}"><button type="button" id="oportunidad">Oportunidades</button></a>
         </div>
+        {% endif %}
     </div>
 </div>
 <hr>
