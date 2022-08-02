@@ -1,7 +1,7 @@
 from email import message
 from time import process_time_ns
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Entrada, Etapa, RegistroTrabajador, Salida, Oportunidades
+from .models import AreaEmpresa, Entrada, Etapa, RegistroTrabajador, Salida, Oportunidades
 from django.contrib import messages
 from .forms import EntradaForm, SalidaForm, OportunidadForm
 from user.models import Usuario
@@ -76,17 +76,22 @@ def extraccionMateriaPrima(request):
 
 def agregarEntradaExtraccion(request):
     if request.user.is_authenticated:
-
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+     
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         print("La id de la etapa es!!!!!!!!: ", etapa)
+        print("La id del area es!!!!!!!!: ", areaTrabajador)
+
+        # print("La id de la empresa es!!!!!!!!: ", empresa)
         data = {
 
             'form': EntradaForm(),
             'registros': registros,
-            'entradas': entradas
+            'entradas': entradas,
+            'areaTrabajador': areaTrabajador
 
         }
         print(f"la id del usuario es!!!!!!!!:", request.user.id)
@@ -98,6 +103,7 @@ def agregarEntradaExtraccion(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -106,11 +112,13 @@ def agregarEntradaExtraccion(request):
     else:
         return render(request, 'autodiagnostico/extraccion/entrada/agregar_entrada.html')
 
+
 def agregarSalidaExtraccion(request):
     if request.user.is_authenticated:
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -128,6 +136,7 @@ def agregarSalidaExtraccion(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -136,11 +145,15 @@ def agregarSalidaExtraccion(request):
     else:
         return render(request, 'autodiagnostico/extraccion/entrada/agregar_salida.html')
 
+
+
+
 def agregarOportunidadExtraccion(request):
     if request.user.is_authenticated:
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -157,6 +170,7 @@ def agregarOportunidadExtraccion(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -192,6 +206,7 @@ def agregarEntradaDiseño(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -207,6 +222,7 @@ def agregarEntradaDiseño(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -216,11 +232,13 @@ def agregarEntradaDiseño(request):
         return render(request, 'autodiagnostico/diseñoProduccion/entrada/agregar_entrada.html')
 
 
+
 def agregarSalidaDiseño(request):
     if request.user.is_authenticated:
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -237,6 +255,7 @@ def agregarSalidaDiseño(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -250,6 +269,7 @@ def agregarOportunidadDiseño(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -266,6 +286,7 @@ def agregarOportunidadDiseño(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -293,6 +314,7 @@ def agregarEntradaLogistica(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -308,6 +330,7 @@ def agregarEntradaLogistica(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -322,6 +345,7 @@ def agregarSalidaLogistica(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -338,6 +362,7 @@ def agregarSalidaLogistica(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -352,6 +377,7 @@ def agregarOportunidadLogistica(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -368,6 +394,7 @@ def agregarOportunidadLogistica(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -395,6 +422,7 @@ def agregarEntradaCompra(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -410,6 +438,7 @@ def agregarEntradaCompra(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -424,6 +453,7 @@ def agregarSalidaCompra(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -440,6 +470,7 @@ def agregarSalidaCompra(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -454,6 +485,7 @@ def agregarOportunidadCompra(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -470,6 +502,7 @@ def agregarOportunidadCompra(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -497,6 +530,7 @@ def agregarEntradaUso(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -512,6 +546,7 @@ def agregarEntradaUso(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -526,6 +561,7 @@ def agregarSalidaUso(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -542,6 +578,7 @@ def agregarSalidaUso(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -557,6 +594,7 @@ def agregarOportunidadUso(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -573,6 +611,7 @@ def agregarOportunidadUso(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -600,6 +639,7 @@ def agregarEntradaFin(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         entradas = Entrada.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -615,6 +655,7 @@ def agregarEntradaFin(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Entrada Registrada con exito")
             else:
@@ -631,6 +672,7 @@ def agregarSalidaFin(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         salidas = Salida.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -647,6 +689,7 @@ def agregarSalidaFin(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
@@ -662,6 +705,7 @@ def agregarOportunidadFin(request):
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
 
         data = {
 
@@ -678,6 +722,7 @@ def agregarOportunidadFin(request):
                 post.nombre = request.POST["nombre"]
                 post.usuario_id = request.user.id
                 post.etapa_id = etapa
+                post.id_area_id = areaTrabajador
                 formulario.save()
                 messages.success(request, "Salida Registrada con exito")
             else:
