@@ -39,10 +39,11 @@
                         {% for p in registros %}
                         <h3>{{p.id_area}}</h3>
                         {% endfor %}
-                        <h3>Hola!! {{user.username}} </h3>
+                        <h3>Hola!! Aministrador</h3>
                         
                         {% if user.is_staff %}
-                            <h3>Administrador</h3>
+                            <h3> {{user.username}}</h3>
+                            
                         {% endif %}
                                             
 
