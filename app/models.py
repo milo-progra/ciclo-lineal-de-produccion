@@ -53,43 +53,6 @@ class Etapa(models.Model):
 
     def __str__(self):
         return self.nombre    
-       
-
-
-        
-
-class Entrada(models.Model):
-    id_entrada = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=50) 
-    fecha =  models.DateTimeField(auto_now_add=True)
-    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
-    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    #cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nombre
-
-class Salida(models.Model):
-    id_salida = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=50) 
-    fecha = models.DateTimeField(auto_now_add=True)
-    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
-    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-   
-
-    def __str__(self):
-        return self.nombre
-
-class Oportunidades(models.Model):
-    id_entrada = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=50) 
-    fecha = models.DateTimeField(auto_now_add=True)
-    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
-    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    
-
-    def __str__(self):
-        return self.nombre
 
 
 class RegistroTrabajador(models.Model):
@@ -102,7 +65,48 @@ class RegistroTrabajador(models.Model):
         return "{}, {}". format(self.usuario, self.area) 
 
     def __str__(self):
-        return self.nombre_registro()           
+        return self.nombre_registro()  
+
+
+        
+
+class Entrada(models.Model):
+    id_entrada = models.AutoField(primary_key=True)
+    nombre  = models.CharField(max_length=50) 
+    fecha =  models.DateTimeField(auto_now_add=True)
+    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+    #cicloArea = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+class Salida(models.Model):
+    id_salida = models.AutoField(primary_key=True)
+    nombre  = models.CharField(max_length=50) 
+    fecha = models.DateTimeField(auto_now_add=True)
+    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+   
+
+    def __str__(self):
+        return self.nombre
+
+class Oportunidades(models.Model):
+    id_entrada = models.AutoField(primary_key=True)
+    nombre  = models.CharField(max_length=50) 
+    fecha = models.DateTimeField(auto_now_add=True)
+    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+
+         
 
 # class Nota(models.Model):
 #     id_nota = models.AutoField(primary_key=True)
