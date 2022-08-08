@@ -1,8 +1,10 @@
 
-from ast import For
+
 from django.shortcuts import render
 from app.models import RegistroTrabajador, Etapa, Entrada, Salida, Oportunidades, Empresa, AreaEmpresa
 from django.db.models import Count
+import collections
+from Levenshtein import distance, editops, apply_edit, jaro
 
 
 
@@ -39,8 +41,6 @@ def home_empresa(request, id):
     return render(request,'empresa_1/home_empresa.html', data)   
 
 
-
-
 def tablasExtraccion(request,id):
         if request.user.is_authenticated:
                 empresas = Empresa.objects.all()
@@ -51,22 +51,50 @@ def tablasExtraccion(request,id):
                 etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
                 #empresa = Empresa.objects.get(id)
                 empresaArea = RegistroTrabajador.objects.all()
-                
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                 entradas = Entrada.objects.filter(etapa_id = etapa)
-                
+
+
+                #/////////////// Levenshtein ///////////////
+                lista_u = []
+                plabra_es = []
+                lista_t = [] 
+                nombre_espa = ""
+                for e in entradas:
+                        for a in area:
+                                if e.id_area_id == a.id_area:        
+                                        #print("las notas son: ",e.nombre) 
+                                        e_nombre = e.nombre
+                                        result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                                        #print(result)
+                                        #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                                        if result > 1 :
+                                                nombre_espa = e.nombre
+                                                print(nombre_espa)
+                                                separador = " "
+                                                maximo_numero_de_separaciones = 2
+                                                separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                                                plabra_es = plabra_es + separado_por_espacios
+                                                
+                                        else:
+                                                lista_u.append(e_nombre)
+
+                lista_t =  plabra_es + lista_u                       
+                #print(lista_t)                    
+
+                #////////////////////////////////////////
                 
                 result = (Entrada.objects
                 .values('id_area')
                 .annotate(dcount=Count('id_area'))
                 .order_by()
                 )
-                print("variable result!!!!!!!: ",result)
+                #print("variable result!!!!!!!: ",result)
 
                
 
                 theanswer = Entrada.objects.values('id_area').annotate(Count('id_area')).filter(etapa_id = etapa) #requiere importar from django.db.models import Count
-                print(theanswer)
+                #print(theanswer)
                 salidas_count = Salida.objects.values('id_area').annotate(Count('id_area')).filter(etapa_id = etapa)
                 
                 oportunidad_count = Oportunidades.objects.values('id_area').annotate(Count('id_area')).filter(etapa_id = etapa)
@@ -84,7 +112,8 @@ def tablasExtraccion(request,id):
                 'salidas_count':salidas_count,
                 'oportunidad_count':oportunidad_count,
                 'empresas':empresas,
-                'empresa':empresa
+                'empresa':empresa,
+                'lista_t':lista_t
                 
 
                 }
@@ -263,6 +292,149 @@ def tablasFin(request,id):
                 return render(request,'empresa_1/tablas_fin.html', data)
         else:
                 return render(request, 'empresa_1/tabla_fin.html')
+
+
+
+def promedioArea(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+
+        entradas = Entrada.objects.filter(id_area_id = id)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        
+
+#/////////////// Levenshtein ///////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+
+        lista_t =  plabra_es + lista_u                       
+        print(lista_t)       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+        print(c)
+        
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        for clave, valor in cantidad_datos:
+                print (clave , ": " , valor)
+
+
+        values = c.values()
+        #print(c['harina'])
+        p = c['harina']
+        
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i
+        #print("la nota mas repetida es: ", nota_masRepetida) 
+       
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        # filas = len(lista_t)
+        # columnas = len(lista_t)
+
+
+        # A = np.zeros([filas,columnas])
+
+        # for i in range(filas):
+        #         for j in range(columnas):
+        #                 a = i+1
+        #                 x = j+1
+        #                 A[i,j] = a+x
+        # print(A)
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        #print(A)   
+        # for line in A:
+        #         c = map
+        #         print (' '.join(map(str, line)))
+        arr = A
+        # for i in A:
+        #         print (i)
+       
+        for i in range(n_filas):
+                canti_registros =  i
+                columna = [fila[i] for fila in A] 
+                print(columna)    
+        #print(canti_registros)
+        #////////////////////////////////////////                
+
+        data = {
+
+                
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'total_entradas':total_entradas,
+                'total_salidas':total_salidas,
+                'total_oportunidades':total_salidas,
+                'nota_masRepetida':nota_masRepetida,
+                'lista_t':lista_t,
+                'clave':clave,
+                'valor':valor,
+                'cantidad_datos':cantidad_datos,
+                'A':A,
+                'arr':arr,
+                'n_filas':n_filas,
+                'n_columnas':n_columnas,
+                'canti_registros':canti_registros
+ 
+        }
+
+        return render(request, 'empresa_1/promedios/promedio.html', data)
+
+
+
+        
+
+
+
+
+
+
 
 def entradasExtraccion(request):
 

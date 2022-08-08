@@ -112,7 +112,30 @@
             {% endfor %}
         </tbody>
     </table>
+
 </div>
+
+<hr>
+
+
+<div class="container-sm">
+    <h1>Registro promedio por area</h1>
+    
+    <div class="row">
+        
+        {% for a in area  %}
+            <div class="col">
+                <a href="{% url 'promedio_area' a.id_area %}"><button type="button" id="compra">{{ a.nombre }}</button></a>
+            </div>
+        {% endfor %}
+
+        
+    </div>
+</div>
+
+
+
+
 <script>
     document.getElementById("extraccion").className = "btn btn-secondary"
 </script>

@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import  path
 from .views import homeAdmin, home_empresa, tablasExtraccion, entradasExtraccion, SalidasExtraccion, OportunidadExtraccion, EntradaDiseño, salidaDiseño, oportunidadDiseño, EntradaLogistica, \
                 salidaLogistica, oportunidadLogistica, entradaCompra, salidaCompra, oportunidadesCompra, entradaUsoConsumo, salidaUsoConsumo, oportunidadUsoConsumo, \
-                entradaFin, salidaFin, oportunidadFin, tablasDiseño, tablasLogistica, tablasCompra, tablasUso, tablasFin 
+                entradaFin, salidaFin, oportunidadFin, tablasDiseño, tablasLogistica, tablasCompra, tablasUso, tablasFin, promedioArea 
 
 urlpatterns = [
     path('home_admin', homeAdmin, name='home_admin'),
@@ -14,6 +14,9 @@ urlpatterns = [
     path('tablas_compra/<id>/', tablasCompra, name='tablas_compra'),
     path('tablas_uso/<id>/', tablasUso, name='tablas_uso'),
     path('tablas_fin/<id>/', tablasFin, name='tablas_fin'),
+
+    #Levenshtein
+    path('promedio_area/<id>/', promedioArea, name='promedio_area'),
 
 
     #extraccion
