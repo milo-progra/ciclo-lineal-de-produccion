@@ -113,6 +113,14 @@
         </tbody>
     </table>
 </div>
+
+<div class="container-sm" id="frecuencia">
+    {% for a in empresa  %}
+    <a href="{% url 'home_frecuencia_fin' a.id_empresa %}" style="font-size: 40px;">Frecuencia de registros</a>
+    {% endfor %}
+    
+</div>
+
 <script>
     document.getElementById("fin").className = "btn btn-secondary"
 </script>

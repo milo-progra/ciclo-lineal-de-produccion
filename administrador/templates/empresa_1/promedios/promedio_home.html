@@ -32,7 +32,7 @@
 
         <div class="container-sm">
             {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" id="cerrarSesion">Cerrar session</a>  <a id="home_admin" href="{% url 'home_admin' %}">Volver al Home</a>
+            <a href="{% url 'logout' %}" id="cerrarSesion">Cerrar session</a> <a id="home_admin" href="{% url 'home_admin' %}">Volver al Home</a>
             {% if registros %}
             <div class="container-sm">
                 <div class="row">
@@ -52,21 +52,48 @@
 
             <hr>
 
-            <h4>Selecciona una Empresa</h4>
             <div class="row">
 
-                {% for empresa in empresas %}
-                <div class="col">
-                    <a href="{% url 'home_empresa' empresa.id_empresa %}"><button type="button" id="{{ empresa.id_empresa }}">{{empresa.nombre }}</button></a>
-                </div>
-                {% endfor %}
+                {% for e in empresa %}
 
+                    <h3>{{e.nombre}}</h3>
+                    
+                {% endfor %}
+                   
+                    <h3>Etapa: {{etapa}}</h3>
+                    
+                        
+
+                
+            </div>
+            <div class="row">
+                <hr>
+                <h3>Selecciona un area</h3>
+
+                {% for a in area  %}
+                    <div class="col">
+                        <a href="{% url 'promedio_area' a.id_area %}"><button type="button" id="{{ a.id_area }}">{{ a.nombre }}</button></a>
+                    </div>
+                {% endfor %}
                 
             </div>
             <hr>
 
         </div>
-        {% block admin %}{% endblock admin %}
+
+        {% block promedio %}{% endblock promedio %}
+
+
+
+
+
+
+
+
+
+
+
+
 
         {% else %}
         <h1>Registra la empresa y el area a la que perteneces!!!!</h1>
