@@ -295,24 +295,161 @@ def tablasFin(request,id):
 
 
 
-def promedioArea(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
-        empresas = Empresa.objects.all()
-        empresa = Empresa.objects.filter(id_empresa = id)
+def promedioHome(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
 
-        entradas = Entrada.objects.filter(id_area_id = id)
+                }
+       
+                return render(request,"empresa_1/promedios/promedio_home.html", data)
+        else:
+                return render(request, "empresa_1/promedios/promedio_home.html")
+
+
+
+
+
+def homeFrecuenciaDiseño(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
+
+                }   
+                return render(request,"diseñoProduccion/frecuencia/home_frecuencia.html", data)
+        else:
+                return render(request, "empresa_1/promedios/promedio_home.html")
+
+
+def homeFrecuenciaLogistica(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
+
+                }   
+                return render(request,"logistica/frecuencia/home_frecuencia.html", data)
+        else:
+                return render(request, "logistica/frecuencia/home_frecuencia.html")
+
+def homeFrecuenciaCompra(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
+
+                }   
+                return render(request,"compra/frecuencia/home_frecuencia.html", data)
+        else:
+                return render(request, "compra/frecuencia/home_frecuencia.html")
+
+
+
+
+
+def homeFrecuenciaUso(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
+
+                }   
+
+                return render(request,"usoConsumo/frecuencia/home_frecuencia.html", data)
+        else:
+                return render(request, "compra/frecuencia/home_frecuencia.html")
+
+
+
+def homeFrecuenciaFin(request,id):
+        if request.user.is_authenticated:
+                empresa = Empresa.objects.filter(id_empresa = id)
+                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
+                area = AreaEmpresa.objects.filter(id_empresa = id)
+                            
+                data = {
+                'registros': registros,
+                'etapa':etapa,
+                'area' : area,
+                'empresa':empresa,    
+
+                }   
+
+                return render(request,"finVida/frecuencia/home_frecuencia.html", data)
+        else:
+                return render(request, "compra/frecuencia/home_frecuencia.html")
+
+
+
+
+def promedioArea(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Extraccion materia prima")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
         total_entradas = Entrada.objects.filter(id_area_id = id).count()
         total_salidas = Salida.objects.filter(id_area_id = id).count()
         total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
 
+        print("la id de la estapa es!!!!!!!!: ",etapa)
         
 
-#/////////////// Levenshtein ///////////////
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
         lista_u = []
         plabra_es = []
         lista_t = [] 
         nombre_espa = ""
-
 
         for e in entradas:
                 #print("las notas son: ",e.nombre) 
@@ -330,18 +467,96 @@ def promedioArea(request, id):
                                                 
                 else:
                         lista_u.append(e_nombre)
-
+                        
         lista_t =  plabra_es + lista_u                       
-        print(lista_t)       
         c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
-        print(c)
-        
+
         clave = c.keys()
         valor = c.values()
         cantidad_datos = c.items()
 
-        for clave, valor in cantidad_datos:
-                print (clave , ": " , valor)
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
 
         values = c.values()
@@ -395,36 +610,1309 @@ def promedioArea(request, id):
         # for i in A:
         #         print (i)
        
-        for i in range(n_filas):
-                canti_registros =  i
-                columna = [fila[i] for fila in A] 
-                print(columna)    
+        # for i in range(n_filas):
+        #         canti_registros =  i
+        #         columna = [fila[i] for fila in A] 
+
+                #print(columna)    
         #print(canti_registros)
-        #////////////////////////////////////////                
-
+        #////////////////////////////////////////                     
         data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
 
-                
-                'registros': registros,
-                'empresas': empresas,
-                'empresa':empresa,
-                'total_entradas':total_entradas,
-                'total_salidas':total_salidas,
-                'total_oportunidades':total_salidas,
-                'nota_masRepetida':nota_masRepetida,
-                'lista_t':lista_t,
-                'clave':clave,
-                'valor':valor,
-                'cantidad_datos':cantidad_datos,
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
                 'A':A,
-                'arr':arr,
-                'n_filas':n_filas,
-                'n_columnas':n_columnas,
-                'canti_registros':canti_registros
- 
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
         }
 
-        return render(request, 'empresa_1/promedios/promedio.html', data)
+        return render(request,'empresa_1/promedios/promedio.html', data)   
+
+
+
+def frecuenciaDiseño(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Diseño y produccion")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+                        
+        lista_t =  plabra_es + lista_u                       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i   
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        arr = A
+        
+        #////////////////////////////////////////                     
+        data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
+
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+                'A':A,
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
+        }
+
+        return render(request,'diseñoProduccion/frecuencia/tablas_frecuencia.html', data)   
+
+
+
+
+
+
+def frecuenciaLogistica(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Logistica")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+                        
+        lista_t =  plabra_es + lista_u                       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i   
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        arr = A
+        
+        #////////////////////////////////////////                     
+        data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
+
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+                'A':A,
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
+        }
+
+        return render(request,'logistica/frecuencia/tablas_frecuencia.html', data)   
+
+
+
+def frecuenciaCompra(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Compra")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+                        
+        lista_t =  plabra_es + lista_u                       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i   
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        arr = A
+        
+        #////////////////////////////////////////                     
+        data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
+
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+                'A':A,
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
+        }
+
+        return render(request,'compra/frecuencia/tablas_frecuencia.html', data)  
+
+
+
+def frecuenciaUso(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Uso consumo")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+                        
+        lista_t =  plabra_es + lista_u                       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i   
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        arr = A
+        
+        #////////////////////////////////////////                     
+        data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
+
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+                'A':A,
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
+        }
+
+        return render(request,'usoConsumo/frecuencia/tablas_frecuencia.html', data)
+
+
+
+
+
+def frecuenciaFin(request, id):
+        area = AreaEmpresa.objects.filter(id_area = id)
+        etapa = Etapa.objects.get(nombre = "Uso consumo")
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        b = 0
+        empresa = 0
+        for a in area:
+                if b < 1 :
+                        empresa_id = a.id_empresa_id
+                        b = b + 1
+        print(empresa_id)        
+
+        empresa = Empresa.objects.filter(id_empresa = empresa_id )
+
+
+        
+        entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+        salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+        oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+        total_entradas = Entrada.objects.filter(id_area_id = id).count()
+        total_salidas = Salida.objects.filter(id_area_id = id).count()
+        total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+        print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+#/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_u = []
+        plabra_es = []
+        lista_t = [] 
+        nombre_espa = ""
+
+        for e in entradas:
+                #print("las notas son: ",e.nombre) 
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                #print(result)
+                #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa = e.nombre
+                        #print(nombre_espa)
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+                        plabra_es = plabra_es + separado_por_espacios
+                                                
+                else:
+                        lista_u.append(e_nombre)
+                        
+        lista_t =  plabra_es + lista_u                       
+        c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        lista_unita_salida = []
+        plabra_espacio_salida = []
+        lista_total_salida = [] 
+        nombre_espa_con_espacio = ""
+
+        for e in salidas:
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_espa_con_espacio = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+                else:
+                        lista_unita_salida.append(e_nombre)
+
+        lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+        print(lista_total_salida)
+        c_salidas = collections.Counter(lista_total_salida)
+        print(c_salidas)
+
+
+        clave_salidas = c_salidas.keys()
+        valor_salidas = c_salidas.values()
+        cantidad_datos_salidas = c_salidas.items()
+
+        # for clave, valor in cantidad_datos:
+        #         print (clave , ": " , valor)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+#/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        lista_unita_opor = []                           #nota sin espacio en su nombre
+        plabra_espacio_opor = []                        #nota con espacio en su nombre
+        lista_total_opor = []                           #arrays con todas las notas
+        nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+        for e in oportunidades:
+                
+                e_nombre = e.nombre
+                result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+                # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+                if result > 1 :
+                        nombre_con_espacio_opor = e.nombre
+                
+                        separador = " "
+                        maximo_numero_de_separaciones = 2
+                        separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+                        plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+                else:
+                        lista_unita_opor.append(e_nombre)
+
+        lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+        # print(lista_total_salida)
+        c_oportunidad = collections.Counter(lista_total_opor)
+        print("las oportunidades son:  ", c_oportunidad)
+
+
+        clave_oportunidad = c_oportunidad.keys()
+        valor_oportunidad = c_oportunidad.values()
+        cantidad_datos_oportunidad = c_oportunidad.items()
+
+        # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+        #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        nota_masRepetida = ""
+        b = 0
+        for i in c:
+                n = c[i]
+                if b < n:
+                        b = n 
+                               
+                if n == b :
+                        nota_masRepetida = i   
+
+        #///////////// Levenshetein ///////////////////////////
+        import numpy as np
+        
+
+        n_filas = len(lista_t)          #Cantidad de registros
+        n_columnas = len(lista_t)       #Cantidad de registros
+        
+        A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+        for i in range(n_filas):
+                for j in range(n_columnas):
+                        a = lista_t[i]
+                        b = lista_t[j]
+                        A[i,j] = round(jaro(a,b)*100)
+                       
+        arr = A
+        
+        #////////////////////////////////////////                     
+        data = {
+                'registros'                     :       registros,
+                'area'                          :       area,
+                'etapa'                         :       etapa,
+                'empresa'                       :       empresa,
+                'total_entradas'                :       total_entradas,
+                'total_salidas'                 :       total_salidas,
+                'total_oportunidades'           :       total_salidas,
+                'nota_masRepetida'              :       nota_masRepetida,
+                'lista_t'                       :       lista_t,
+
+                #entradas
+                'clave'                         :       clave,
+                'valor'                         :       valor,
+                'cantidad_datos'                :       cantidad_datos,
+
+                #salidas
+                'clave_salidas'                 :       clave_salidas,
+                'valor_salidas'                 :       valor_salidas,
+                'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+                #oportunidad
+                'clave_oportunidad'             :       clave_oportunidad,
+                'valor_oportunidad'             :       valor_oportunidad,
+                'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+                'A':A,
+                'arr'                           :       arr,
+                'n_filas'                       :       n_filas,
+                'n_columnas'                    :       n_columnas,
+                #'canti_registros'               :       canti_registros,
+                        
+        }
+
+        return render(request,'finVida/frecuencia/tablas_frecuencia.html', data)
+
+
+# def promedioArea(request, id):
+#         etapa = Etapa.objects.get(nombre = "Extraccion materia prima") 
+#         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+#         empresas = Empresa.objects.all()
+#         empresa = Empresa.objects.filter(id_empresa = id)
+#         area = AreaEmpresa.objects.filter(id_empresa = id)
+#         empresaArea = RegistroTrabajador.objects.all()
+
+#         entradas = Entrada.objects.filter(id_area_id = id, etapa_id = etapa)
+#         salidas = Salida.objects.filter(id_area_id = id, etapa_id = etapa)
+#         oportunidades = Oportunidades.objects.filter(id_area_id = id, etapa_id = etapa)
+#         total_entradas = Entrada.objects.filter(id_area_id = id).count()
+#         total_salidas = Salida.objects.filter(id_area_id = id).count()
+#         total_oportunidades = Oportunidades.objects.filter(id_area_id = id).count()
+
+#         print("la id de la estapa es!!!!!!!!: ",etapa)
+        
+
+# #/////////////// Entradas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+#         lista_u = []
+#         plabra_es = []
+#         lista_t = [] 
+#         nombre_espa = ""
+
+#         for e in entradas:
+#                 #print("las notas son: ",e.nombre) 
+#                 e_nombre = e.nombre
+#                 result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+#                 #print(result)
+#                 #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+#                 if result > 1 :
+#                         nombre_espa = e.nombre
+#                         #print(nombre_espa)
+#                         separador = " "
+#                         maximo_numero_de_separaciones = 2
+#                         separado_por_espacios = nombre_espa.split(separador, maximo_numero_de_separaciones)
+#                         plabra_es = plabra_es + separado_por_espacios
+                                                
+#                 else:
+#                         lista_u.append(e_nombre)
+                        
+#         lista_t =  plabra_es + lista_u                       
+#         c = collections.Counter(lista_t) #crea un diccionario agrupando por palabras
+
+#         clave = c.keys()
+#         valor = c.values()
+#         cantidad_datos = c.items()
+
+#         # for clave, valor in cantidad_datos:
+#         #         print (clave , ": " , valor)
+ 
+# #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+# #/////////////// salidas /////////////////////////////////////////////////////////////////////////////////////////////////////////
+#         lista_unita_salida = []
+#         plabra_espacio_salida = []
+#         lista_total_salida = [] 
+#         nombre_espa_con_espacio = ""
+
+#         for e in salidas:
+#                 e_nombre = e.nombre
+#                 result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+#                 # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+#                 if result > 1 :
+#                         nombre_espa_con_espacio = e.nombre
+                
+#                         separador = " "
+#                         maximo_numero_de_separaciones = 2
+#                         separado_por_espacios = nombre_espa_con_espacio.split(separador, maximo_numero_de_separaciones)
+#                         plabra_espacio_salida = plabra_espacio_salida + separado_por_espacios
+                                                
+#                 else:
+#                         lista_unita_salida.append(e_nombre)
+
+#         lista_total_salida = plabra_espacio_salida + lista_unita_salida
+
+#         print(lista_total_salida)
+#         c_salidas = collections.Counter(lista_total_salida)
+#         print(c_salidas)
+
+
+#         clave_salidas = c_salidas.keys()
+#         valor_salidas = c_salidas.values()
+#         cantidad_datos_salidas = c_salidas.items()
+
+#         # for clave, valor in cantidad_datos:
+#         #         print (clave , ": " , valor)
+ 
+# #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+# #/////////////// Oportunidades /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#         lista_unita_opor = []                           #nota sin espacio en su nombre
+#         plabra_espacio_opor = []                        #nota con espacio en su nombre
+#         lista_total_opor = []                           #arrays con todas las notas
+#         nombre_con_espacio_opor = ""                       #variable donde se guarda la nota con espacios en su nombre deontro del for
+
+#         for e in oportunidades:
+                
+#                 e_nombre = e.nombre
+#                 result = len(e_nombre.split()) #cuanta las palabras que tiene cada registro
+                
+#                 # # #si el registro tiene mas de un 1 palabra guardalo en la variable nombre_espa
+#                 if result > 1 :
+#                         nombre_con_espacio_opor = e.nombre
+                
+#                         separador = " "
+#                         maximo_numero_de_separaciones = 2
+#                         separado_por_espacios = nombre_con_espacio_opor.split(separador, maximo_numero_de_separaciones)
+#                         plabra_espacio_opor = plabra_espacio_opor + separado_por_espacios
+                                                
+#                 else:
+#                         lista_unita_opor.append(e_nombre)
+
+#         lista_total_opor = plabra_espacio_opor + lista_unita_opor
+
+#         # print(lista_total_salida)
+#         c_oportunidad = collections.Counter(lista_total_opor)
+#         print("las oportunidades son:  ", c_oportunidad)
+
+
+#         clave_oportunidad = c_oportunidad.keys()
+#         valor_oportunidad = c_oportunidad.values()
+#         cantidad_datos_oportunidad = c_oportunidad.items()
+
+#         # for clave_oportunidad, valor_oportunidad in cantidad_datos:
+#         #         print (clave_oportunidad , ": " , valor_oportunidad)
+ 
+# #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+#         values = c.values()
+#         #print(c['harina'])
+#         p = c['harina']
+        
+
+#         nota_masRepetida = ""
+#         b = 0
+#         for i in c:
+#                 n = c[i]
+#                 if b < n:
+#                         b = n 
+                               
+#                 if n == b :
+#                         nota_masRepetida = i
+#         #print("la nota mas repetida es: ", nota_masRepetida) 
+       
+
+#         #///////////// Levenshetein ///////////////////////////
+#         import numpy as np
+#         # filas = len(lista_t)
+#         # columnas = len(lista_t)
+
+
+#         # A = np.zeros([filas,columnas])
+
+#         # for i in range(filas):
+#         #         for j in range(columnas):
+#         #                 a = i+1
+#         #                 x = j+1
+#         #                 A[i,j] = a+x
+#         # print(A)
+
+#         n_filas = len(lista_t)          #Cantidad de registros
+#         n_columnas = len(lista_t)       #Cantidad de registros
+        
+#         A = np.zeros([n_filas, n_columnas]) #Creo un array vacio
+
+#         for i in range(n_filas):
+#                 for j in range(n_columnas):
+#                         a = lista_t[i]
+#                         b = lista_t[j]
+#                         A[i,j] = round(jaro(a,b)*100)
+                       
+#         #print(A)   
+#         # for line in A:
+#         #         c = map
+#         #         print (' '.join(map(str, line)))
+#         arr = A
+#         # for i in A:
+#         #         print (i)
+       
+#         # for i in range(n_filas):
+#         #         canti_registros =  i
+#         #         columna = [fila[i] for fila in A] 
+
+#                 #print(columna)    
+#         #print(canti_registros)
+#         #////////////////////////////////////////                
+
+#         data = {
+
+                
+#                 'registros'                     :       registros,
+#                 'empresas'                      :       empresas,
+#                 'empresa'                       :       empresa,
+#                 'total_entradas'                :       total_entradas,
+#                 'total_salidas'                 :       total_salidas,
+#                 'total_oportunidades'           :       total_salidas,
+#                 'nota_masRepetida'              :       nota_masRepetida,
+#                 'lista_t'                       :       lista_t,
+
+#                 #entradas
+#                 'clave'                         :       clave,
+#                 'valor'                         :       valor,
+#                 'cantidad_datos'                :       cantidad_datos,
+
+#                 #salidas
+#                 'clave_salidas'                 :       clave_salidas,
+#                 'valor_salidas'                 :       valor_salidas,
+#                 'cantidad_datos_salidas'        :       cantidad_datos_salidas,
+
+#                 #oportunidad
+#                 'clave_oportunidad'             :       clave_oportunidad,
+#                 'valor_oportunidad'             :       valor_oportunidad,
+#                 'cantidad_datos_oportunidad'    :       cantidad_datos_oportunidad,
+
+#                 'A':A,
+#                 'arr'                           :       arr,
+#                 'n_filas'                       :       n_filas,
+#                 'n_columnas'                    :       n_columnas,
+#                 #'canti_registros'               :       canti_registros,
+#                 'area'                          :       area,
+#                 "empresaArea"                   :       empresaArea
+ 
+#         }
+
+#         return render(request, 'empresa_1/promedios/promedio.html', data)
 
 
 

@@ -118,22 +118,13 @@
 <hr>
 
 
-<div class="container-sm">
-    <h1>Registro promedio por area</h1>
+
+<div class="container-sm" id="frecuencia">
+    {% for a in empresa  %}
+    <a href="{% url 'promedio_home' a.id_empresa %}" style="font-size: 40px;">Frecuencia de registros</a>
+    {% endfor %}
     
-    <div class="row">
-        
-        {% for a in area  %}
-            <div class="col">
-                <a href="{% url 'promedio_area' a.id_area %}"><button type="button" id="compra">{{ a.nombre }}</button></a>
-            </div>
-        {% endfor %}
-
-        
-    </div>
 </div>
-
-
 
 
 <script>
