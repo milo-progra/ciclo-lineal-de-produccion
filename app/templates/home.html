@@ -42,14 +42,15 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#intro">Mision</a></li>
-                    <li><a href="#work">Work</a></li>
+                    
                     <!-- <li><a href="#about">About</a></li> -->
                     
-                    <li><a href="{% url 'auto_diagnostico' %}">Auto Diagnostico</a></li>
                     
                     {% if user.is_staff %}
-                    <li><a href="{% url 'home_admin' %}">Dashboard</a></li>
+                    <li><a href="{% url 'auto_diagnostico' %}">Registros</a></li>
+                    <li><a href="{% url 'home_admin' %}">Frecuencias</a></li>
+                    {% else %}
+                    <li><a href="{% url 'auto_diagnostico' %}">Auto Diagnostico</a></li>
                     {% endif %}
                         
                     
