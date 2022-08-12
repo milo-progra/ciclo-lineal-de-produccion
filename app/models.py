@@ -73,7 +73,7 @@ class RegistroTrabajador(models.Model):
 class Entrada(models.Model):
     id_entrada = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha =  models.DateTimeField(auto_now_add=True)
+    fecha =  models.DateField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
     id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
@@ -85,7 +85,7 @@ class Entrada(models.Model):
 class Salida(models.Model):
     id_salida = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha =  models.DateField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
     id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
@@ -97,7 +97,7 @@ class Salida(models.Model):
 class Oportunidades(models.Model):
     id_entrada = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=50) 
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha =  models.DateField(auto_now_add=True)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
     usuario =models.ForeignKey(Usuario, on_delete=models.CASCADE)
     id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)

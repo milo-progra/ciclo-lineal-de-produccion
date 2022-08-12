@@ -1,0 +1,47 @@
+{% extends 'graficos/home_graficos.html' %}
+
+
+{% block graficos %}
+
+<div class="container-sm">
+    {% for e in empresa %}
+    <div class="row">
+
+        <div class="col">
+            <a href="{% url 'areas_extraccion' e.id_empresa %}"><button type="button" id="extraccion">Extraccion materia prima</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'areas_diseño' e.id_empresa %}"><button type="button" id="diseño">Diseño y produccion</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'areas_logistica' e.id_empresa %}"><button type="button" id="logistica">Logistica</button></a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <a href="{% url 'areas_compra' e.id_empresa %}"><button type="button" id="compra">Compra</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'areas_uso' e.id_empresa %}"><button type="button" id="uso_consumo">Uso Consumo</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'areas_fin' e.id_empresa %}"><button type="button" id="fin">Fin de vida</button></a>
+        </div>
+        
+    </div>
+    {% endfor %}
+<hr>
+</div>
+
+{% block etapa %}{% endblock etapa %}
+
+{% for e in empresa %}
+<script>
+    document.getElementById({{ e.id_empresa }}).className = "btn btn-secondary"
+</script>
+{% endfor %}
+    
+{% endblock graficos %}
+    
+
