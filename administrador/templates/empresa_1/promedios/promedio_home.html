@@ -32,7 +32,7 @@
 
         <div class="container-sm">
             {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" id="cerrarSesion">Cerrar session</a> <a id="home_admin" href="{% url 'home_admin' %}">Volver al Home</a>
+            <a id="home_admin" href="{% url 'home' %}">Volver al Home</a>  <a href="{% url 'logout' %}" id="cerrarSesion">Cerrar session</a>
             {% if registros %}
             <div class="container-sm">
                 <div class="row">
