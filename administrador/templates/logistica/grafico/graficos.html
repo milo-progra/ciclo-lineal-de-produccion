@@ -1,0 +1,73 @@
+{% extends 'logistica/grafico/areas.html' %}
+
+{% block area %}
+
+
+{% for a in areas %}
+
+
+<h3>{{a.nombre}}</h3>
+<div class="container-sm" id="grafico">
+    <canvas id="myChart{{a.id_area}}"></canvas>
+</div>
+
+
+
+<canvas id="myChart{{a.id_area}}" width="20" height="20"></canvas>
+
+
+
+
+
+<script>
+
+    const ctx{{ a.id_area }} = document.getElementById('myChart{{a.id_area}}').getContext('2d');
+    const myChart{{ a.id_area }} = new Chart(ctx{{ a.id_area }}, {
+        type: 'bar',
+        data: {
+           
+            labels: [{% for clave_dicc, valor_dicc in cantidad_datos_dicc %} '{{clave_dicc}}', {% endfor %} ],
+            datasets: [
+                {
+                    label: 'Entradas',
+                    data: [{% for clave_dicc, valor_dicc in cantidad_datos_dicc %} '{{valor_dicc}}', {% endfor %}],
+                    backgroundColor: 'rgb(255, 81, 81)',  
+                },
+                {
+                    label: 'Salidas ',
+                    data: [{% for clave_dicc_salida, valor_dicc_salida in cantidad_datos_dicc_salida %} '{{valor_dicc_salida}}', {% endfor %}],
+                    backgroundColor: 'rgb(81, 152, 255)',  
+                },
+                {
+                    label: 'Oportunidades ',
+                    data: [{% for clave_dicc_oportunidad, valor_dicc_oportunidad in cantidad_datos_dicc_oportunidad %} '{{valor_dicc_oportunidad}}', {% endfor %}],
+                    backgroundColor: 'rgb(46, 221, 131)',  
+                },
+                
+            ]
+        },
+
+        options: {
+
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Chart.js Bar Chart - Stacked'
+                },
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });
+
+</script>
+{% endfor %}
+
+{% endblock area %}

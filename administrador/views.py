@@ -1,9 +1,11 @@
 
 
+from datetime import datetime
 from django.shortcuts import render
 from app.models import RegistroTrabajador, Etapa, Entrada, Salida, Oportunidades, Empresa, AreaEmpresa
 from django.db.models import Count
 import collections
+import numpy as np
 from Levenshtein import distance, editops, apply_edit, jaro
 
 
@@ -2378,3 +2380,982 @@ def oportunidadFin(request):
                 return render(request,'finVida/oportunidad/tabla_oportunidad.html', data)
         else:
                 return render(request, 'finVida/oportunidad/tabla_oportunidad.html')
+
+
+
+
+
+
+# ############################################# graficos ###############################################
+
+def homeGraficos(request):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        
+
+        data = {
+                'registros': registros,
+                'empresas': empresas 
+                }
+
+        return render(request, 'graficos/home_graficos.html', data)
+
+
+
+def etapaGraficos(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_empresa = id)
+        empresa = Empresa.objects.filter(id_empresa = id)
+        
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'area':area,
+                'empresa':empresa,
+                }
+
+        return render(request, 'graficos/etapas.html', data)
+
+
+
+def areasExtraccion(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'extraccion/grafico/areas.html', data)
+
+
+
+
+def graficosExtraccion(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+        ######## entradas ##############
+        fechas = []
+        for e in entradas:
+                fechas.append(e.fecha)
+
+        c = collections.Counter(fechas)
+           
+
+        clave = c.keys()
+        valor = c.values()
+        cantidad_datos = c.items()    
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave': clave,
+                'valor': valor,
+                'cantidad_datos' : cantidad_datos,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'extraccion/grafico/graficos.html', data)       
+
+
+def areasDiseño(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'diseñoProduccion/grafico/areas.html', data)
+
+
+
+
+def graficosDiseño(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+
+        ######## entradas ##############
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'diseñoProduccion/grafico/graficos.html', data)       
+
+
+
+
+def areasLogistica(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'logistica/grafico/areas.html', data)        
+
+
+
+
+def graficosLogistica(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+
+        ######## entradas ##############
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'logistica/grafico/graficos.html', data)         
+
+
+
+def areasCompra(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'compra/grafico/areas.html', data)        
+
+
+
+
+def graficosCompra(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+
+        ######## entradas ##############
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'compra/grafico/graficos.html', data)     
+
+
+
+def areasUso(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'usoConsumo/grafico/areas.html', data)        
+
+
+
+def graficosUso(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+
+        ######## entradas ##############
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'usoConsumo/grafico/graficos.html', data)     
+
+
+
+
+def areasFin(request, id):
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        empresa = Empresa.objects.filter(id_empresa = id)
+        areas = AreaEmpresa.objects.filter(id_empresa = id)
+           
+
+
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'empresa':empresa,
+                'areas':areas
+                }
+
+        return render(request, 'finVida/grafico/areas.html', data)      
+
+
+def graficosFin(request, id):
+
+        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        empresas = Empresa.objects.all()
+        area = AreaEmpresa.objects.filter(id_area = id)
+        
+           
+        ################################ fechas ################################################
+        #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
+
+        etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa, id_area = id)
+        salidas = Salida.objects.filter(etapa_id = etapa, id_area = id)
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa, id_area = id)
+
+        
+        b1 = 0
+        for i in area :
+                if b1 < 1 :
+                        empresa = i.id_empresa_id
+                        b1 = b1 + 1
+
+        empresa = Empresa.objects.filter(id_empresa = empresa)
+            
+
+
+        dias_total = []
+     
+        for e in entradas:
+                dias_total.append(e.fecha)
+
+        for e in salidas:
+                dias_total.append(e.fecha)
+
+        for e in oportunidades:
+                dias_total.append(e.fecha)                  
+       
+
+        #print("list original", dias_total)
+
+        convert_list_to_set = set(dias_total)
+        #print("Set is: ",convert_list_to_set)
+
+        new_list = list(convert_list_to_set)
+        #print("Resultant List is: ",new_list)
+
+        dias_total = list(convert_list_to_set)
+        #print("Removed duplicates from original list: ",dias_total)
+
+        dias_total.sort()
+
+
+
+        ######## entradas ##############
+        #crear diccionario para grafico
+        diccionario = {}
+
+        for i in dias_total:
+                diccionario[i] = 0
+
+        for d in diccionario:
+                for e in entradas:
+                        if d == e.fecha:
+                                diccionario[d] = diccionario[d] +1
+                                print(diccionario[d])
+
+        print(diccionario)
+        clave_dicc = diccionario.keys()
+        valor_dicc = diccionario.values()
+        cantidad_datos_dicc = diccionario.items()
+
+
+
+        ######## salidas ##############
+
+        dicc_salidas= {}
+
+        for i in dias_total:
+                dicc_salidas[i] = 0
+
+        for d in dicc_salidas:
+                for e in salidas:
+                        if d == e.fecha:
+                                dicc_salidas[d] = dicc_salidas[d] +1
+                                
+
+        clave_dicc_salida = dicc_salidas.keys()
+        valor_dicc_salida = dicc_salidas.values()
+        cantidad_datos_dicc_salida = dicc_salidas.items()
+
+
+        ######## oportunidades ##############
+
+        dicc_oportunidades= {}
+
+        for i in dias_total: #en este for creo un diccionario donde la i sea la key y el value sea 0 para todos los registros
+                dicc_oportunidades[i] = 0 
+
+        for d in dicc_oportunidades:
+                for e in oportunidades:
+                        if d == e.fecha:
+                                dicc_oportunidades[d] = dicc_oportunidades[d] +1
+                                
+
+        clave_dicc_oportunidad = dicc_oportunidades.keys()
+        valor_dicc_oportunidad = dicc_oportunidades.values()
+        cantidad_datos_dicc_oportunidad = dicc_oportunidades.items()
+              
+
+        
+      
+        data = {
+                'registros': registros,
+                'empresas': empresas,
+                'areas':area,
+                'empresa':empresa,
+                'dias_total':dias_total,
+                'clave_dicc': clave_dicc,
+                'valor_dicc': valor_dicc,
+                'cantidad_datos_dicc' : cantidad_datos_dicc,
+                'clave_dicc_salida' : clave_dicc_salida,
+                'valor_dicc_salida' : valor_dicc_salida,
+                'cantidad_datos_dicc_salida' : cantidad_datos_dicc_salida,
+                'clave_dicc_oportunidad' : clave_dicc_oportunidad,
+                'valor_dicc_oportunidad' : valor_dicc_oportunidad,
+                'cantidad_datos_dicc_oportunidad' : cantidad_datos_dicc_oportunidad,
+                
+
+                
+                }
+
+        return render(request, 'finVida/grafico/graficos.html', data)     

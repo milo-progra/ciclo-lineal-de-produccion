@@ -1,0 +1,28 @@
+{% extends 'graficos/etapas.html' %}
+
+
+{% block etapa %}
+
+
+<div class="container-sm">
+    <h3>Selecciona un area</h3>
+    <div class="row">
+        {% for a in areas %}
+        <div class="col">
+            <a href="{% url 'graficos_logistica' a.id_area %}"><button type="button">{{a.nombre }}</button></a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% block area %}{% endblock area %}
+
+
+
+
+<script>
+    document.getElementById('logistica').className = "btn btn-secondary"
+</script>
+
+{% endblock etapa %}

@@ -65,3 +65,13 @@
 #ingresarArea{
     margin-top: 90px;
 }
+
+
+/* graficos */
+#grafico{
+    height: 500px;
+    width: 800px;
+    background-color: white;
+ 
+    margin-bottom: 70px;
+}
