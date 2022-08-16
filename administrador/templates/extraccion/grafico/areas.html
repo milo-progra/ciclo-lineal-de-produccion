@@ -5,11 +5,11 @@
 
 
 <div class="container-sm">
-    <h3>Selecciona un area!!!!!!!</h3>
+    <h3>Selecciona un area</h3>
     <div class="row">
         {% for a in areas %}
         <div class="col">
-            <a href="{% url 'graficos_extraccion' a.id_area %}"><button type="button">{{a.nombre }}</button></a>
+            <a href="{% url 'graficos_extraccion' a.id_area %}"><button type="button" id="area_{{ a.id_area }}" >{{a.nombre }}</button></a>
         </div>
         {% endfor %}
     </div>

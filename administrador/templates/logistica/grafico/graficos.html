@@ -3,10 +3,10 @@
 {% block area %}
 
 
-{% for a in areas %}
+{% for a in area_grafico %}
 
 
-<h3>{{a.nombre}}</h3>
+
 <div class="container-sm" id="grafico">
     <canvas id="myChart{{a.id_area}}"></canvas>
 </div>
@@ -68,6 +68,17 @@
     });
 
 </script>
+
+
+{% for a in area_grafico  %}
+    
+
+<script>
+    document.getElementById('area_{{ a.id_area }}').className = "btn btn-secondary"
+</script>
+
+{% endfor %}
+
 {% endfor %}
 
 {% endblock area %}
