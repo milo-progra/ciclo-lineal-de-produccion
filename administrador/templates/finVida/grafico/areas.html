@@ -9,7 +9,7 @@
     <div class="row">
         {% for a in areas %}
         <div class="col">
-            <a href="{% url 'graficos_fin' a.id_area %}"><button type="button">{{a.nombre }}</button></a>
+            <a href="{% url 'graficos_fin' a.id_area %}"><button type="button" id="area_{{ a.id_area }}"  >{{a.nombre }}</button></a>
         </div>
         {% endfor %}
     </div>

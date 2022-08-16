@@ -2444,8 +2444,8 @@ def graficosExtraccion(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
-        
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
+     
            
         ################################ fechas ################################################
         #mosrar en el vertice x del graficp la fechas de ingreso de las notas(entrada, salida, oportunidad) sin repetir las fechas
@@ -2457,14 +2457,14 @@ def graficosExtraccion(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
-            
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)
 
 
         dias_total = []
@@ -2565,7 +2565,8 @@ def graficosExtraccion(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave': clave,
@@ -2612,7 +2613,7 @@ def graficosDiseño(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
            
         ################################ fechas ################################################
@@ -2625,12 +2626,13 @@ def graficosDiseño(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)
             
 
 
@@ -2722,7 +2724,8 @@ def graficosDiseño(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave_dicc': clave_dicc,
@@ -2768,7 +2771,7 @@ def graficosLogistica(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
            
         ################################ fechas ################################################
@@ -2781,12 +2784,13 @@ def graficosLogistica(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)
             
 
 
@@ -2878,7 +2882,8 @@ def graficosLogistica(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave_dicc': clave_dicc,
@@ -2923,7 +2928,7 @@ def graficosCompra(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
            
         ################################ fechas ################################################
@@ -2936,13 +2941,13 @@ def graficosCompra(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
-            
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)    
 
 
         dias_total = []
@@ -3033,7 +3038,8 @@ def graficosCompra(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave_dicc': clave_dicc,
@@ -3077,7 +3083,7 @@ def graficosUso(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
            
         ################################ fechas ################################################
@@ -3090,12 +3096,13 @@ def graficosUso(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)  
             
 
 
@@ -3187,7 +3194,8 @@ def graficosUso(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave_dicc': clave_dicc,
@@ -3231,7 +3239,7 @@ def graficosFin(request, id):
 
         registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
         empresas = Empresa.objects.all()
-        area = AreaEmpresa.objects.filter(id_area = id)
+        area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
            
         ################################ fechas ################################################
@@ -3244,12 +3252,13 @@ def graficosFin(request, id):
 
         
         b1 = 0
-        for i in area :
+        for i in area_grafico :
                 if b1 < 1 :
-                        empresa = i.id_empresa_id
+                        empresa_id = i.id_empresa_id
                         b1 = b1 + 1
 
-        empresa = Empresa.objects.filter(id_empresa = empresa)
+        empresa = Empresa.objects.filter(id_empresa = empresa_id)
+        areas = AreaEmpresa.objects.filter(id_empresa = empresa_id)  
             
 
 
@@ -3341,7 +3350,8 @@ def graficosFin(request, id):
         data = {
                 'registros': registros,
                 'empresas': empresas,
-                'areas':area,
+                'area_grafico':area_grafico,
+                'areas':areas,
                 'empresa':empresa,
                 'dias_total':dias_total,
                 'clave_dicc': clave_dicc,
