@@ -6,7 +6,9 @@ from .views import homeAdmin, home_empresa, tablasExtraccion, entradasExtraccion
                 entradaFin, salidaFin, oportunidadFin, tablasDiseño, tablasLogistica, tablasCompra, tablasUso, tablasFin, promedioArea, promedioHome, homeFrecuenciaDiseño, \
                 homeFrecuenciaLogistica, homeFrecuenciaCompra, homeFrecuenciaUso, homeFrecuenciaFin, frecuenciaDiseño, frecuenciaLogistica, frecuenciaCompra, frecuenciaUso, \
                 frecuenciaFin, homeGraficos, etapaGraficos, areasExtraccion, graficosExtraccion, areasDiseño, graficosDiseño, areasLogistica, graficosLogistica, areasCompra, graficosCompra, \
-                areasUso, graficosUso, areasFin, graficosFin        
+                areasUso, graficosUso, areasFin, graficosFin, ReporteExcel, ReporteExcelSalida, ReporteExcelOportunidades, ReporteExcelEntradaDiseño, ReporteExcelSalidaDiseño, ReporteExcelOportunidadDiseño, \
+                ReporteExcelEntradaLogistica, ReporteExcelSalidaLogistica, ReporteExcelOportunidadLogistica, ReporteExcelEntradaCompra, ReporteExcelSalidaCompra, ReporteExcelOportunidadCompra, \
+                ReporteExcelEntradaUso, ReporteExcelSalidaUso, ReporteExcelOportunidadUso, ReporteExcelEntradaFin, ReporteExcelSalidaFin, ReporteExcelOportunidadFin                
 
 urlpatterns = [
     path('home_admin', homeAdmin, name='home_admin'),
@@ -78,6 +80,37 @@ urlpatterns = [
     path('frecuencia_fin/<id>/', frecuenciaFin, name='frecuencia_fin'),
     path('areas_fin/<id>/', areasFin, name = 'areas_fin'),
     path('graficos_fin/<id>/', graficosFin, name = 'graficos_fin' ),
+
+    # ///////////////////////////////reportes de excel ///////////////////////////////////
+    #extraccion
+    path('reporte_entradas', ReporteExcel.as_view(), name= "reporte_entradas"),
+    path('reporte_salidas', ReporteExcelSalida.as_view(), name= "reporte_salidas"),
+    path('reporte_oportunidades', ReporteExcelOportunidades.as_view(), name= "reporte_oportunidades"),
+
+    #diseño
+    path('reporte_entradas_diseño', ReporteExcelEntradaDiseño.as_view(), name= "reporte_entradas_diseño"),
+    path('reporte_salidas_diseño', ReporteExcelSalidaDiseño.as_view(), name= "reporte_salidas_diseño"),
+    path('reporte_oportunidades_diseño', ReporteExcelOportunidadDiseño.as_view(), name= "reporte_oportunidades_diseño"),
+
+    #Logistica
+    path('reporte_entradas_logistica', ReporteExcelEntradaLogistica.as_view(), name= "reporte_entradas_logistica"),
+    path('reporte_salidas_logistica', ReporteExcelSalidaLogistica.as_view(), name= "reporte_salidas_logistica"),
+    path('reporte_oportunidades_logistica', ReporteExcelOportunidadLogistica.as_view(), name= "reporte_oportunidades_logistica"),
+
+    #Compra
+    path('reporte_entradas_compra', ReporteExcelEntradaCompra.as_view(), name= "reporte_entradas_compra"),
+    path('reporte_salidas_compra', ReporteExcelSalidaCompra.as_view(), name= "reporte_salidas_compra"),
+    path('reporte_oportunidades_Compra', ReporteExcelOportunidadCompra.as_view(), name= "reporte_oportunidades_Compra"),
+
+    #Uso consumo
+    path('reporte_entradas_uso', ReporteExcelEntradaUso.as_view(), name= "reporte_entradas_uso"),
+    path('reporte_salidas_uso', ReporteExcelSalidaUso.as_view(), name= "reporte_salidas_uso"),
+    path('reporte_oportunidades_uso', ReporteExcelOportunidadUso.as_view(), name= "reporte_oportunidades_uso"),
+
+    #Fin de vida
+    path('reporte_entradas_fin', ReporteExcelEntradaFin.as_view(), name= "reporte_entradas_fin"),
+    path('reporte_salidas_fin', ReporteExcelSalidaFin.as_view(), name= "reporte_salidas_fin"),
+    path('reporte_oportunidades_fin', ReporteExcelOportunidadFin.as_view(), name= "reporte_oportunidades_fin"),
 
 
 ]
