@@ -38,14 +38,19 @@
                 <div class="row">
                     
                     
-                    {% for i in registros %}
-                        <h3>{{i.id_area}}</h3>
-                    {% endfor %}
+                    
                         
-                    <h3>Hola!!! {{user.username}}</h3>
+                    
                     
                     {% if user.is_staff %}
                     <h3>Hola!! Administrador </h3>
+                    <h3>{{ user.username }}</h3>
+                    {% else %}
+                        {% for i in registros %}
+                            <h3>Hola!!! {{user.username}}</h3>
+                            <h3>{{i.id_area}}</h3>
+                        {% endfor %}
+
                     {% endif %}
 
 
