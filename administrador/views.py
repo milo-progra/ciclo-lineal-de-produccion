@@ -1,12 +1,16 @@
 
 
 from datetime import datetime
+from pipes import Template
 from django.shortcuts import render
 from app.models import RegistroTrabajador, Etapa, Entrada, Salida, Oportunidades, Empresa, AreaEmpresa
 from django.db.models import Count
 import collections
 import numpy as np
 from Levenshtein import distance, editops, apply_edit, jaro
+from django.views.generic import TemplateView
+from openpyxl import Workbook
+from django.http.response import HttpResponse
 
 
 
@@ -1917,15 +1921,6 @@ def frecuenciaFin(request, id):
 #         return render(request, 'empresa_1/promedios/promedio.html', data)
 
 
-
-        
-
-
-
-
-
-
-
 def entradasExtraccion(request):
 
         if request.user.is_authenticated:
@@ -3369,3 +3364,690 @@ def graficosFin(request, id):
                 }
 
         return render(request, 'finVida/grafico/graficos.html', data)     
+
+
+
+
+
+# reportes de excel
+
+#  ///////////////////////////////////////// reportes de excel extraccion ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcel(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalida(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidades(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#  ///////////////////////////////////////// reportes de excel Diseño y produccion ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcelEntradaDiseño(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalidaDiseño(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidadDiseño(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#  ///////////////////////////////////////// reportes de excel Logistica ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcelEntradaLogistica(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalidaLogistica(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidadLogistica(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+#  ///////////////////////////////////////// reportes de excel Compra ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcelEntradaCompra(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalidaCompra(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidadCompra(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Oportunidades'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#  ///////////////////////////////////////// reportes de excel Uso Consumo ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcelEntradaUso(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalidaUso(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidadUso(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Oportunidades'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#  ///////////////////////////////////////// reportes de excel Fin de vida  ///////////////////////////////////////////////////////////////////////////
+
+class ReporteExcelEntradaFin(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
+        entradas = Entrada.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Entradas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4
+
+        for e in entradas:
+                print(e.id_area.id_empresa_id)
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelSalidaFin(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
+        salidas = Salida.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Salidas'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in salidas:
+                
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+
+class ReporteExcelOportunidadFin(TemplateView):
+    def get(self, request, *args, **kwargs):
+        etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
+        oportunidades = Oportunidades.objects.filter(etapa_id = etapa)
+        wb = Workbook()
+        ws = wb.active
+        ws['B1'] = 'Reporte de Oportunidades'
+
+        ws.merge_cells('B1:G1')
+        ws['B3'] = 'ID Empresa'
+        ws['C3'] = 'ID Area'
+        ws['D3'] = 'ID Usuario'
+        ws['E3'] = 'Nombre'
+        ws['F3'] = 'Fecha'
+        ws['G3'] = 'ID Etapa'
+
+        cont = 4 #fila en la que comienza la tabla 
+
+        for e in oportunidades:
+                ws.cell(row = cont, column = 2).value = e.id_area.id_empresa_id
+                ws.cell(row = cont, column = 3).value = e.id_area_id
+                ws.cell(row = cont, column = 4).value = e.usuario_id
+                ws.cell(row = cont, column = 5).value = e.nombre
+                ws.cell(row = cont, column = 6).value = e.fecha
+                ws.cell(row = cont, column = 7).value = e.etapa_id
+                cont+=1
+
+        nombre_archivo = "ReporteExcel.xlsx"
+        response = HttpResponse(content_type = "aplication/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
