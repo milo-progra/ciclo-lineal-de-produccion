@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Integracion de Web con Telegram</h2>
+                        <hr />
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="container-sm" id="inputs">
+
+                                {% csrf_token %} {{ form | crispy}}
+
+
+                                <div class="d-flex justify-content-end mt-2">
+                                    <a href="{% url 'home' %}" class="btn btn-danger">Cancelar</a>
+                                    &nbsp;
+                                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                                </div>
+                            </div>
+
+                            <p style="color: red;" id="msj_confirmacion">Si este seguro que desea desasociar su id
+                                telegram presione "Guardar"</p>
+                            <p style="color: red;" id="msj_cancelar">Para cancelar la accion presione "Cancelar"</p>
+                        
+                            <div class="container-sm" id="confirmar_nulo">
+                                <a href="{% url 'home' %}"><button type="submit" class="btn btn-danger">Cancelar</button></a>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>    
+                        </form>
+                        <div class="d-flex justify-content-end mt-2">
+                            <input type="submit" value="DESASOCIAR ID TELEGRAM" onclick="get()" class="btn btn-primary"
+                                id="restablecer_telegram" />
+                        </div>
+                        {{ mensaje }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function get() {
+        let id_input = document.getElementById("id_telegram")
+        id_input.value = "0";
+
+        if (id_input.value != 0) {
+            document.getElementById("msj_confirmacion").style.display = "none";
+        }
+
+        document.getElementById("msj_confirmacion").style.display = "block";
+        document.getElementById("msj_cancelar").style.display = "block";
+        document.getElementById("inputs").style.display = "none"
+        document.getElementById("restablecer_telegram").style.display = "none"
+        document.getElementById("confirmar_nulo").style.display = "block"
+    }
+</script>
+{% endblock %}

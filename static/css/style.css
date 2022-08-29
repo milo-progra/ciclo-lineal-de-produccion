@@ -76,3 +76,15 @@
     margin-top: 70px;
 }
 
+#msj_confirmacion{
+    margin-top: 37px;
+    display: none
+}
+
+#msj_cancelar{
+    display: none;
+}
+
+#confirmar_nulo{
+    display: none;
+}
