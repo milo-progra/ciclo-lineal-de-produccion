@@ -35,7 +35,12 @@
             <div class="content">
                 <div class="inner">
                     <h1>Diagnóstico Ciclo Lineal</h1>
-                    <p>Si deseas realizar tus registros a traves de telegram preciona <a href="{% url 'agregar_telegram' user.id %}">aqui</a> </p>
+                    
+                    {% if user.is_authenticated %}
+                        
+                    
+                        <p>Si deseas realizar tus registros a traves de telegram preciona <a href="{% url 'agregar_telegram' user.id %}">aqui</a> </p>
+                    {% endif %}
                     
                 </div>
             </div>

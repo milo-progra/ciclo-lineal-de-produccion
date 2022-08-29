@@ -27,7 +27,7 @@
                             <p style="color: red;" id="msj_cancelar">Para cancelar la accion presione "Cancelar"</p>
                         
                             <div class="container-sm" id="confirmar_nulo">
-                                <a href="{% url 'home' %}"><button type="submit" class="btn btn-danger">Cancelar</button></a>
+                                <a href="{% url 'home' %}" class="btn btn-danger">Cancelar</a>
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>    
                         </form>
@@ -43,14 +43,21 @@
 </div>
 
 
+
+
 <script>
+    let id_input = document.getElementById("id_telegram")
+
+    if (id_input.value == "0") {
+            document.getElementById("restablecer_telegram").style.display = "none"
+    }
 
     function get() {
         let id_input = document.getElementById("id_telegram")
         id_input.value = "0";
 
         if (id_input.value != 0) {
-            document.getElementById("msj_confirmacion").style.display = "none";
+            document.getElementById("restablecer_telegram").style.display = "none"
         }
 
         document.getElementById("msj_confirmacion").style.display = "block";
