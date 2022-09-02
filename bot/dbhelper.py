@@ -51,4 +51,11 @@ class DBHelper:
         stmt = "INSERT INTO app_oportunidades (nombre, etapa_id, usuario_id, id_area_id, fecha) VALUES (?, ? , ?, ?, ?)"   
         args = (nota, etapa_id, usuario, id_area, fecha)
         self.conn.execute(stmt, args)
-        self.conn.commit()                
+        self.conn.commit()
+
+
+    def add_log(self, fecha, text, id_telegram):
+        stmt = "INSERT INTO administrador_logtelegram (timesstap, text, id_telegram) VALUES (?, ?, ?)"
+        args = (fecha, text, id_telegram)
+        self.conn.execute(stmt, args)
+        self.conn.commit()  

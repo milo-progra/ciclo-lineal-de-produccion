@@ -57,9 +57,13 @@ def handle_updates(updates):
             # por que al hacer print(user)  aparece "<sqlite3.Cursor object at 0x000001E707A92640>"
             userfetch = user.fetchone()
 
-            
+            if text != None:
+                fecha = date.today() 
+                db.add_log( fecha, text, chat)
+
 
             if text == "/my_id":
+                 
                 send_message("Tu id de telegram es:  "+str(chat), chat)
 
 
@@ -146,7 +150,7 @@ def get_last_chat_id_and_text(updates):
     num_updates = len(updates["result"])
     last_update = num_updates - 1
     text = updates["result"][last_update]["message"]["text"]
-    print(text)
+    
     chat_id = updates["result"][last_update]["message"]["chat"]["id"]
     return (text, chat_id)
 
