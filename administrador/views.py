@@ -1,7 +1,9 @@
 
 
+from ast import Return
 from datetime import datetime
 from pipes import Template
+from urllib import request
 from django.shortcuts import render
 from app.models import RegistroTrabajador, Etapa, Entrada, Salida, Oportunidades, Empresa, AreaEmpresa
 from django.db.models import Count
@@ -11,6 +13,7 @@ from Levenshtein import distance, editops, apply_edit, jaro
 from django.views.generic import TemplateView
 from openpyxl import Workbook
 from django.http.response import HttpResponse
+from .models import LogTelegram
 
 
 
@@ -4051,3 +4054,18 @@ class ReporteExcelOportunidadFin(TemplateView):
         response['Content-Disposition'] = content
         wb.save(response)
         return response
+
+
+
+def log_telegan(request):
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        logs_telegram = LogTelegram.objects.all()
+
+        data = {
+                'logs_telegram':logs_telegram,
+                'registros': registros
+        }
+        return render(request,'log_telegram/log_telegram.html', data)
+
+
+

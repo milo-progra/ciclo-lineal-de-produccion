@@ -54,6 +54,8 @@
                     <li><a href="{% url 'auto_diagnostico' %}">Registros</a></li>
                     <li><a href="{% url 'home_admin' %}">Frecuencias</a></li>
                     <li  style="border-left: 1px solid white;"><a href="{% url 'home_graficos' %}">Graficos</a></li>
+                    <li  style="border-left: 1px solid white;"><a href="{% url 'log_telegram' %}">Log Telegram</a></li>
+                    <li  style="border-left: 1px solid white;"><a href="admin/">Admin Django</a></li>
                     {% else %}
                     <li><a href="{% url 'auto_diagnostico' %}">Auto Diagnostico</a></li>
                     {% endif %}
