@@ -8,7 +8,7 @@ from .views import homeAdmin, home_empresa, tablasExtraccion, entradasExtraccion
                 frecuenciaFin, homeGraficos, etapaGraficos, areasExtraccion, graficosExtraccion, areasDiseño, graficosDiseño, areasLogistica, graficosLogistica, areasCompra, graficosCompra, \
                 areasUso, graficosUso, areasFin, graficosFin, ReporteExcel, ReporteExcelSalida, ReporteExcelOportunidades, ReporteExcelEntradaDiseño, ReporteExcelSalidaDiseño, ReporteExcelOportunidadDiseño, \
                 ReporteExcelEntradaLogistica, ReporteExcelSalidaLogistica, ReporteExcelOportunidadLogistica, ReporteExcelEntradaCompra, ReporteExcelSalidaCompra, ReporteExcelOportunidadCompra, \
-                ReporteExcelEntradaUso, ReporteExcelSalidaUso, ReporteExcelOportunidadUso, ReporteExcelEntradaFin, ReporteExcelSalidaFin, ReporteExcelOportunidadFin                
+                ReporteExcelEntradaUso, ReporteExcelSalidaUso, ReporteExcelOportunidadUso, ReporteExcelEntradaFin, ReporteExcelSalidaFin, ReporteExcelOportunidadFin, log_telegan                
 
 urlpatterns = [
     path('home_admin', homeAdmin, name='home_admin'),
@@ -112,5 +112,7 @@ urlpatterns = [
     path('reporte_salidas_fin', ReporteExcelSalidaFin.as_view(), name= "reporte_salidas_fin"),
     path('reporte_oportunidades_fin', ReporteExcelOportunidadFin.as_view(), name= "reporte_oportunidades_fin"),
 
+    #Telegram
+    path('log_telegram', log_telegan, name="log_telegram"),
 
 ]
