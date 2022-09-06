@@ -1,0 +1,14 @@
+[
+    {
+        "type": "Feature", "geometry": 
+        { 
+            "type": "Point", "coordinates": [ 289.2523086, -33.5022488]
+        },
+        "properties": 
+        {
+            "EMPRESA": "Panaderia FF", 
+            "AREA": "Transporte", 
+            "Direccion": "Calle 3 Oficina 3 ", 
+            "COMUNA": "Cerrillos"} 
+    }
+]

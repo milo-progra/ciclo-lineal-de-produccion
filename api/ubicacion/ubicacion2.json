@@ -1,0 +1,15 @@
+[
+    {
+        "type": "Feature", "geometry": 
+        { 
+            "type": "Point", "coordinates": [289.1893511, -33.3549203]
+        },
+        "properties": 
+        {
+            "EMPRESA": "Panaderia FF",
+            "AREA": "Cocina", 
+            "Direccion": "Calle 2 Oficina 2 ", 
+            "COMUNA": "Quilicura"
+        } 
+    }
+]

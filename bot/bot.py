@@ -1,5 +1,5 @@
 
-import telebot
+
 import json
 import requests
 import time
