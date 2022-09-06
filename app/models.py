@@ -10,7 +10,11 @@ from user.models import Usuario
 
 class Empresa(models.Model):
     id_empresa = models.AutoField(primary_key=True)
-    nombre  = models.CharField(max_length=20)    
+    nombre  = models.CharField(max_length=20)
+    calle = models.CharField(max_length=250)
+    comuna = models.CharField(max_length=150) 
+    lat = models.IntegerField()
+    long = models.IntegerField()
 
     def __str__(self):
         return self.nombre
@@ -20,7 +24,11 @@ class AreaEmpresa(models.Model):
     id_area = models.AutoField(primary_key=True)
     nombre  = models.CharField(max_length=20)   
     productos = models.CharField(max_length=50)
-    id_empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE) 
+    id_empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    calle = models.CharField(max_length=250)
+    comuna = models.CharField(max_length=150)
+    lat = models.IntegerField()
+    long = models.IntegerField()  
 
     def nombre_area(self):
         return "{}, {}". format(self.nombre, self.id_empresa)
@@ -31,16 +39,16 @@ class AreaEmpresa(models.Model):
 
 
 
-class CicloArea(models.Model):
-    id_ciclo = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=40)
-    descripcion = models.CharField(max_length=40)
-    fecha = models.DateField()
-    area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
-    activo = models.BooleanField()
+# class CicloArea(models.Model):
+#     id_ciclo = models.AutoField(primary_key=True)
+#     nombre = models.CharField(max_length=40)
+#     descripcion = models.CharField(max_length=40)
+#     fecha = models.DateField()
+#     area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
+#     activo = models.BooleanField()
 
-    def __str__(self):
-        return self.nombre
+#     def __str__(self):
+#         return self.nombre
 
 class Etapa(models.Model):
     id_etapa = models.AutoField(primary_key=True)
@@ -48,7 +56,6 @@ class Etapa(models.Model):
     fecha_inicio  = models.DateField() 
     fecha_termino  = models.DateField()
     area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)  
-    ciclo = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
     activo = models.BooleanField()
 
     def __str__(self):

@@ -1,0 +1,16 @@
+[
+    {
+        "type": "Feature", "geometry": 
+        { 
+            "type": "Point", "coordinates": [289.3263383, -33.4409602]
+        },
+        "properties": 
+        {
+            "EMPRESA": "Panaderia FF", 
+            "AREA": "Casa Matriz", 
+            "Direccion": "Calle 1 Oficina 1 ", 
+            "COMUNA": "Santiago Centro"
+        } 
+    }
+]
+
