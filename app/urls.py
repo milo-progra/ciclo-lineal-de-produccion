@@ -1,11 +1,6 @@
 from django.contrib import admin
 from django.urls import  path
-from .views import home, autoDiagnostico, extraccionMateriaPrima, diseño_Produccion, agregarEntradaExtraccion, \
-                agregarSalidaExtraccion, agregarOportunidadExtraccion, agregarEntradaDiseño, agregarSalidaDiseño, agregarOportunidadDiseño, \
-                logistica, agregarEntradaLogistica, agregarSalidaLogistica, agregarOportunidadLogistica, compra, agregarEntradaCompra, \
-                agregarSalidaCompra, agregarOportunidadCompra, usoConsumo, agregarEntradaUso, agregarSalidaUso, agregarOportunidadUso, \
-                finVida, agregarEntradaFin, agregarSalidaFin, agregarOportunidadFin        
-
+from .views import *
 urlpatterns = [
     path('', home, name="home"),
     path('auto_diagnostico', autoDiagnostico, name="auto_diagnostico"),

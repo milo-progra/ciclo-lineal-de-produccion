@@ -6,8 +6,19 @@ from .serializers import UserSerializers
 from rest_framework import status
 from django.http import Http404
 from user.models import Usuario
+from app.models import RegistroTrabajador
 import json
 # Create your views here.
+
+def home_api(request):
+    if request.user.is_authenticated:
+        
+        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        data = {
+            'registros':registros
+        }
+        
+    return render(request,'home_api.html',data)
 
 
 class User_APIView(APIView):

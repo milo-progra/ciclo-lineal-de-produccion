@@ -17,6 +17,10 @@ def home(request):
         return render(request, 'home.html')
 
 
+
+
+
+
 def autoDiagnostico(request):
     if request.user.is_authenticated:
         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
