@@ -50,6 +50,10 @@ class Ubicacion_APIView(APIView):
         print(len(datos['ubicacion']))  # len indica la cantidad de elementos del array
 
 
+        #ruta para pythonenywhere
+        # with open("/home/miloVan/ciclo-lineal-de-produccion/api/ubicacion/ubicacion_json.json", 'w') as f:
+        #     json.dump(datos, f)
+        
         #Escribir los datos en un json
         with open("api/ubicacion/ubicacion_json.json", 'w') as f:
             json.dump(datos, f)
