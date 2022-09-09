@@ -13,7 +13,7 @@ import json
 def home_api(request):
     if request.user.is_authenticated:
         
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         data = {
             'registros':registros
         }

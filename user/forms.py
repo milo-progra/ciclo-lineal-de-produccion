@@ -90,7 +90,7 @@ class RegistroTrabajadorForm(forms.ModelForm):
 
     class Meta:
         model = RegistroTrabajador
-        fields = 'id_registro', 'descripcion', 'empresa', 'id_area'
+        fields = 'descripcion', 'empresa', 'id_area'
 
 
 # Form usuario por consola

@@ -22,7 +22,7 @@ from .models import LogTelegram
 # Create your views here.
 
 def homeAdmin(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
     empresas = Empresa.objects.all()
 
     data = {
@@ -37,7 +37,7 @@ def homeAdmin(request):
 
 
 def home_empresa(request, id):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
     empresas = Empresa.objects.all()
     empresa = Empresa.objects.filter(id_empresa = id)
 
@@ -55,7 +55,7 @@ def tablasExtraccion(request,id):
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapas = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
                 etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
                 #empresa = Empresa.objects.get(id)
@@ -137,7 +137,7 @@ def tablasDiseño(request,id):
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapas = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
                 etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
                 #empresa = Empresa.objects.get(id)
@@ -188,7 +188,7 @@ def tablasLogistica(request,id):
         if request.user.is_authenticated:
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
                 empresaArea = RegistroTrabajador.objects.all()
                 area = AreaEmpresa.objects.filter(id_empresa = id)
@@ -218,7 +218,7 @@ def tablasCompra(request,id):
         if request.user.is_authenticated:
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
                 empresaArea = RegistroTrabajador.objects.all()
                 area = AreaEmpresa.objects.filter(id_empresa = id)
@@ -247,7 +247,7 @@ def tablasUso(request,id):
         if request.user.is_authenticated:
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
                 empresaArea = RegistroTrabajador.objects.all()
                 area = AreaEmpresa.objects.filter(id_empresa = id)
@@ -277,7 +277,7 @@ def tablasFin(request,id):
         if request.user.is_authenticated:
                 empresas = Empresa.objects.all()
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
                 empresaArea = RegistroTrabajador.objects.all()
                 area = AreaEmpresa.objects.filter(id_empresa = id)
@@ -307,7 +307,7 @@ def tablasFin(request,id):
 def promedioHome(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Extraccion materia prima") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -330,7 +330,7 @@ def promedioHome(request,id):
 def homeFrecuenciaDiseño(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Diseño y produccion") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -349,7 +349,7 @@ def homeFrecuenciaDiseño(request,id):
 def homeFrecuenciaLogistica(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Logistica") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -367,7 +367,7 @@ def homeFrecuenciaLogistica(request,id):
 def homeFrecuenciaCompra(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Compra") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -389,7 +389,7 @@ def homeFrecuenciaCompra(request,id):
 def homeFrecuenciaUso(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Uso consumo") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -410,7 +410,7 @@ def homeFrecuenciaUso(request,id):
 def homeFrecuenciaFin(request,id):
         if request.user.is_authenticated:
                 empresa = Empresa.objects.filter(id_empresa = id)
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.get(nombre = "Fin de vida") #trar solo la ID de la etapa "Extraccion materia prima"
                 area = AreaEmpresa.objects.filter(id_empresa = id)
                             
@@ -432,7 +432,7 @@ def homeFrecuenciaFin(request,id):
 def promedioArea(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Extraccion materia prima")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -667,7 +667,7 @@ def promedioArea(request, id):
 def frecuenciaDiseño(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Diseño y produccion")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -875,7 +875,7 @@ def frecuenciaDiseño(request, id):
 def frecuenciaLogistica(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Logistica")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -1080,7 +1080,7 @@ def frecuenciaLogistica(request, id):
 def frecuenciaCompra(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Compra")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -1285,7 +1285,7 @@ def frecuenciaCompra(request, id):
 def frecuenciaUso(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Uso consumo")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -1492,7 +1492,7 @@ def frecuenciaUso(request, id):
 def frecuenciaFin(request, id):
         area = AreaEmpresa.objects.filter(id_area = id)
         etapa = Etapa.objects.get(nombre = "Uso consumo")
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)    
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)    
         b = 0
         empresa = 0
         for a in area:
@@ -1695,7 +1695,7 @@ def frecuenciaFin(request, id):
 
 # def promedioArea(request, id):
 #         etapa = Etapa.objects.get(nombre = "Extraccion materia prima") 
-#         registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+#         registros = RegistroTrabajador.objects.filter(usuario=request.user)
 #         empresas = Empresa.objects.all()
 #         empresa = Empresa.objects.filter(id_empresa = id)
 #         area = AreaEmpresa.objects.filter(id_empresa = id)
@@ -1928,7 +1928,7 @@ def entradasExtraccion(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -1952,7 +1952,7 @@ def SalidasExtraccion(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -1977,7 +1977,7 @@ def OportunidadExtraccion(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2005,7 +2005,7 @@ def EntradaDiseño(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2029,7 +2029,7 @@ def salidaDiseño(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2053,7 +2053,7 @@ def oportunidadDiseño(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2081,7 +2081,7 @@ def EntradaLogistica(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2106,7 +2106,7 @@ def salidaLogistica(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2131,7 +2131,7 @@ def oportunidadLogistica(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2159,7 +2159,7 @@ def entradaCompra(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2183,7 +2183,7 @@ def salidaCompra(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2208,7 +2208,7 @@ def oportunidadesCompra(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2234,7 +2234,7 @@ def entradaUsoConsumo(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2259,7 +2259,7 @@ def salidaUsoConsumo(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2284,7 +2284,7 @@ def oportunidadUsoConsumo(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2311,7 +2311,7 @@ def entradaFin(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
                 entradas = Entrada.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2335,7 +2335,7 @@ def salidaFin(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
                 entradas = Salida.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2359,7 +2359,7 @@ def oportunidadFin(request):
 
         if request.user.is_authenticated:
 
-                registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+                registros = RegistroTrabajador.objects.filter(usuario=request.user)
                 etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
                 entradas = Oportunidades.objects.all()
                 empresaArea = RegistroTrabajador.objects.all()
@@ -2387,7 +2387,7 @@ def oportunidadFin(request):
 # ############################################# graficos ###############################################
 
 def homeGraficos(request):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         
 
@@ -2401,7 +2401,7 @@ def homeGraficos(request):
 
 
 def etapaGraficos(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area = AreaEmpresa.objects.filter(id_empresa = id)
         empresa = Empresa.objects.filter(id_empresa = id)
@@ -2419,7 +2419,7 @@ def etapaGraficos(request, id):
 
 
 def areasExtraccion(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -2440,7 +2440,7 @@ def areasExtraccion(request, id):
 
 def graficosExtraccion(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
      
@@ -2588,7 +2588,7 @@ def graficosExtraccion(request, id):
 
 
 def areasDiseño(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -2609,7 +2609,7 @@ def areasDiseño(request, id):
 
 def graficosDiseño(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
@@ -2746,7 +2746,7 @@ def graficosDiseño(request, id):
 
 
 def areasLogistica(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -2767,7 +2767,7 @@ def areasLogistica(request, id):
 
 def graficosLogistica(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
@@ -2903,7 +2903,7 @@ def graficosLogistica(request, id):
 
 
 def areasCompra(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -2924,7 +2924,7 @@ def areasCompra(request, id):
 
 def graficosCompra(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
@@ -3059,7 +3059,7 @@ def graficosCompra(request, id):
 
 
 def areasUso(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -3079,7 +3079,7 @@ def areasUso(request, id):
 
 def graficosUso(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
@@ -3216,7 +3216,7 @@ def graficosUso(request, id):
 
 
 def areasFin(request, id):
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         empresa = Empresa.objects.filter(id_empresa = id)
         areas = AreaEmpresa.objects.filter(id_empresa = id)
@@ -3235,7 +3235,7 @@ def areasFin(request, id):
 
 def graficosFin(request, id):
 
-        registros = RegistroTrabajador.objects.filter(id_usuario = request.user)
+        registros = RegistroTrabajador.objects.filter(usuario = request.user)
         empresas = Empresa.objects.all()
         area_grafico = AreaEmpresa.objects.filter(id_area = id)
         
@@ -4058,7 +4058,7 @@ class ReporteExcelOportunidadFin(TemplateView):
 
 
 def log_telegan(request):
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         logs_telegram = LogTelegram.objects.all()
 
         data = {

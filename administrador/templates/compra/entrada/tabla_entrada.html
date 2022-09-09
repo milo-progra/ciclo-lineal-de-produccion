@@ -23,7 +23,7 @@
             
                 {% for e  in empresaArea  %}
             
-                        {% if p.usuario == e.id_usuario and p.etapa.nombre == "Compra" %}
+                        {% if p.usuario == e.usuario and p.etapa.nombre == "Compra" %}
             
                             <tr>
                                 <td>{{ e.id_area.id_empresa }}</td>

@@ -11,7 +11,7 @@ from user.models import Usuario
 def home(request):
     # obj_cliente = User.objects.only('rut').get(rut=rut)
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         return render(request, 'home.html', {'registros': registros})
     else:
         return render(request, 'home.html')
@@ -23,7 +23,7 @@ def home(request):
 
 def autoDiagnostico(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         return render(request, 'autodiagnostico/auto_diagnostico.html', {'registros': registros})
     else:
         return render(request, 'autodiagnostico/auto_diagnostico.html')
@@ -32,7 +32,7 @@ def autoDiagnostico(request):
 def extraccionMateriaPrima(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         entradas = Entrada.objects.filter(usuario=request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
@@ -80,10 +80,10 @@ def extraccionMateriaPrima(request):
 
 def agregarEntradaExtraccion(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
      
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         print("La id de la etapa es!!!!!!!!: ", etapa)
@@ -119,10 +119,10 @@ def agregarEntradaExtraccion(request):
 
 def agregarSalidaExtraccion(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -154,10 +154,10 @@ def agregarSalidaExtraccion(request):
 
 def agregarOportunidadExtraccion(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Extraccion materia prima")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -192,7 +192,7 @@ def agregarOportunidadExtraccion(request):
 # Diseño y produccion
 
 def diseño_Produccion(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
 
     data = {
 
@@ -207,10 +207,10 @@ def diseño_Produccion(request):
 def agregarEntradaDiseño(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -239,10 +239,10 @@ def agregarEntradaDiseño(request):
 
 def agregarSalidaDiseño(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -270,10 +270,10 @@ def agregarSalidaDiseño(request):
 
 def agregarOportunidadDiseño(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Diseño y produccion")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -303,7 +303,7 @@ def agregarOportunidadDiseño(request):
 # logistica
 
 def logistica(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
 
     data = {  
             'registros': registros, 
@@ -315,10 +315,10 @@ def logistica(request):
 def agregarEntradaLogistica(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -346,10 +346,10 @@ def agregarEntradaLogistica(request):
 
 def agregarSalidaLogistica(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -378,10 +378,10 @@ def agregarSalidaLogistica(request):
 
 def agregarOportunidadLogistica(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Logistica")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -411,7 +411,7 @@ def agregarOportunidadLogistica(request):
 #compra
 
 def compra(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
 
     data = {  
             'registros': registros, 
@@ -423,10 +423,10 @@ def compra(request):
 def agregarEntradaCompra(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -454,10 +454,10 @@ def agregarEntradaCompra(request):
 
 def agregarSalidaCompra(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -486,10 +486,10 @@ def agregarSalidaCompra(request):
 
 def agregarOportunidadCompra(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Compra")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -519,7 +519,7 @@ def agregarOportunidadCompra(request):
 #Uso consumo
 
 def usoConsumo(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
 
     data = {  
             'registros': registros, 
@@ -531,10 +531,10 @@ def usoConsumo(request):
 def agregarEntradaUso(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -562,10 +562,10 @@ def agregarEntradaUso(request):
 
 def agregarSalidaUso(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -595,10 +595,10 @@ def agregarSalidaUso(request):
 
 def agregarOportunidadUso(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Uso consumo")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -628,7 +628,7 @@ def agregarOportunidadUso(request):
 # Fin de vida
 
 def finVida(request):
-    registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+    registros = RegistroTrabajador.objects.filter(usuario=request.user)
 
     data = {  
             'registros': registros, 
@@ -640,10 +640,10 @@ def finVida(request):
 def agregarEntradaFin(request):
     if request.user.is_authenticated:
 
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         entradas = Entrada.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
         # etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(activo=True)
         data = {
 
@@ -673,10 +673,10 @@ def agregarEntradaFin(request):
 
 def agregarSalidaFin(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         salidas = Salida.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 
@@ -706,10 +706,10 @@ def agregarSalidaFin(request):
 
 def agregarOportunidadFin(request):
     if request.user.is_authenticated:
-        registros = RegistroTrabajador.objects.filter(id_usuario=request.user)
+        registros = RegistroTrabajador.objects.filter(usuario=request.user)
         etapa = Etapa.objects.values_list("id_etapa", flat=True).filter(nombre="Fin de vida")
         oportunidades = Oportunidades.objects.filter(usuario=request.user)
-        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(id_usuario = request.user)
+        areaTrabajador = RegistroTrabajador.objects.values_list("id_area", flat=True).filter(usuario = request.user)
 
         data = {
 

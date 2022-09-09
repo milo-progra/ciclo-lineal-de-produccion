@@ -55,7 +55,6 @@ class Etapa(models.Model):
     nombre  = models.CharField(max_length=50)
     fecha_inicio  = models.DateField() 
     fecha_termino  = models.DateField()
-    area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)  
     activo = models.BooleanField()
 
     def __str__(self):
@@ -63,13 +62,12 @@ class Etapa(models.Model):
 
 
 class RegistroTrabajador(models.Model):
-    id_registro = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     descripcion = models.TextField(max_length=160)                
     id_area = models.ForeignKey(AreaEmpresa, on_delete=models.CASCADE)
 
     def nombre_registro(self):
-        return "{}, {}". format(self.usuario, self.area) 
+        return "{}, {}". format(self.usuario, self.id_area) 
 
     def __str__(self):
         return self.nombre_registro()  
@@ -113,27 +111,6 @@ class Oportunidades(models.Model):
         return self.nombre
 
 
-         
 
-# class Nota(models.Model):
-#     id_nota = models.AutoField(primary_key=True)
-#     nombre = models.CharField(max_length=40)
-#     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
-#     opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE)
-#     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-#     ciclo = models.ForeignKey(CicloArea, on_delete=models.CASCADE)
-#     fecha = models.DateField()
-
-
-#     def __str__(self):
-#         return self.nombre
-                
-          
-# class Opcion(models.Model):
-#     id_Opcion = models.AutoField(primary_key=True)
-#     nombre = models.CharField(max_length=40)
-
-#     def __str__(self):
-#         return self.nombre          
 
 
