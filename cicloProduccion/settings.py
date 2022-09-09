@@ -36,6 +36,8 @@ LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,10 +49,12 @@ INSTALLED_APPS = [
     'app',
     'user',
     'administrador',
-    'api',
-    
-    
+    'api',  
 ]
+
+    
+    
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,6 +135,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+#descomentar static_root y comentar STATICFILES_DIRS para lanzar un collecttatic
 #STATIC_ROOT = "static/"
 
 #Configuracion para agregar campos al usuario
