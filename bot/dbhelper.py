@@ -30,7 +30,7 @@ class DBHelper:
         return[x[0] for x in self.conn.execute(stmt, args)]
 
     def get_id_area(self, id_usuario_id):
-        stmt = "SELECT id_area_id FROM app_registrotrabajador WHERE id_usuario_id = (?)"
+        stmt = "SELECT id_area_id FROM app_registrotrabajador WHERE usuario_id = (?)"
         args = (id_usuario_id, ) 
         return self.conn.execute(stmt, args)       
 

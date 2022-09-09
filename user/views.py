@@ -6,9 +6,10 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistroTrabajadorForm, UsuarioForm, TelegramForm
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
-from app.models import AreaEmpresa
+from app.models import AreaEmpresa, RegistroTrabajador
 from .models import Usuario
-
+from tablib import Dataset 
+import csv
 # Create your views here.
 
 
@@ -57,7 +58,7 @@ def AgregarArea(request, id):
 
             if form.is_valid():
                 post = form.save(commit=False)
-                post.id_usuario = Usuario.objects.only('id').get(id=id)
+                post.usuario = Usuario.objects.only('id').get(id=id)
                 post.id_area = AreaEmpresa.objects.get(
                     id_area=request.POST['id_area'])
                 post.descripcion = request.POST['descripcion']
@@ -85,49 +86,5 @@ def agregraIDtelegram(request, id):
     return render(request, 'telegram/agregar_telegram.html', data)
 
 
-
-
-
-
-    # data = {
-    #     'form' : RegistroTrabajadorForm()
-    # }
-    # if request.method == 'POST':
-    #     formulario = RegistroTrabajadorForm(data = request.POST)
-    #     if formulario.is_valid():
-    #         formulario.save()
-    #         return redirect(to='home')
-    #     data['form'] = formulario #si el form no es valido
-    # return render(request, 'area/agregar_area.html', data)
-
-
-# class AgregarArea(TemplateView):
-#     template_name = "agregar_area.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Select Anidados | Django'
-#         return context
-
-
-# if request.method == "POST":
-    #     data = {}
-    #     for i in AreaEmpresa.objects.filter(id_empresa = request.POST['id']):
-    #         data.append({'id' : i.id_area, 'nombre': i.nombre})
-    #     try:
-    #         action = request.POST['action']
-    #         if action == 'buscar_area':
-    #             pass
-    #         else:
-    #             data['error'] = 'ha ocurrido un error'
-    #         # codigo a ejecutar
-    #         # podria haber un error en este bloque
-
-    #     except Exception as e:
-    #         data['error'] = str(e)
-
-    #     return JsonResponse(data, safe=False)
-
-    #         # Haz esto para manejar la excepcion
-    #         # El bloque except se ejecutara si el bloque try lanza un error
-    # return render(request, 'area/agregar_area.html')
+def registro_usuario(request):
+    pass

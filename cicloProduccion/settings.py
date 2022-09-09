@@ -46,13 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'rest_framework',
+    'import_export', 
     'app',
     'user',
     'administrador',
     'api',  
 ]
 
-    
+IMPORT_EXPORT_USE_TRANSACTIONS = True    
     
 
 
