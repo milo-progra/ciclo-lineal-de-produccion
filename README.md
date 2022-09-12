@@ -13,7 +13,7 @@
 
 		comando 1: cd ..
 		comando 2: cd..
-		comando 3: cd cicloProduccion
+		comando 3: cd ciclo-lineal-de-produccion-main
 
 4.- Instalar libreria comando: 
 
