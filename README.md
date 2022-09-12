@@ -6,7 +6,7 @@
 
 3.- Ejecutar ambiante virtual:
 
-		comando 1: venv/scripts
+		comando 1: cd venv/scripts
 		comando 2: activate.bat.
 
 4.- Ingresar app web:
